@@ -218,6 +218,8 @@ class Transfer extends React.Component {
       ? this.renderNoInput1()
       : this.renderInput1();
 
+    console.log(forceInput, autoInput, hasEnoughInputs, hasSufficientInputs);
+
     return (
       <Grid>
         {message}
@@ -399,7 +401,7 @@ class Transfer extends React.Component {
     const { transfers, donation, inputs } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
-    const unspentInputs = inputs.filter(i => !i.spent);
+    const unspentInputs = inputs.filter(i => (!i.spent || i.selected));
     return unspentInputs
       .sort((a, b) => b.balance - a.balance).slice(0, this.romeo.guard.getMaxInputs())
       .reduce((t, i) => t + i.balance, 0) >= totalValue;
@@ -409,7 +411,7 @@ class Transfer extends React.Component {
     const { transfers, donation, inputs, autoInput } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
-    const unspentInputs = inputs.filter(i => !i.spent && (autoInput || i.selected));
+    const unspentInputs = inputs.filter(i => ((autoInput || !i.spent) || i.selected));
     return unspentInputs.reduce((t, i) => t + i.balance, 0) >= totalValue;
   }
 
