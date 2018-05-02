@@ -218,8 +218,6 @@ class Transfer extends React.Component {
       ? this.renderNoInput1()
       : this.renderInput1();
 
-    console.log(forceInput, autoInput, hasEnoughInputs, hasSufficientInputs);
-
     return (
       <Grid>
         {message}
