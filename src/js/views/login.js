@@ -3,6 +3,8 @@ import romeo from 'romeo.lib';
 import { connect } from 'react-redux';
 import ReactFileReader from 'react-file-reader';
 import { Redirect } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { showInfo } from '../romeo';
 import {
   Container,
   Grid,
@@ -59,6 +61,7 @@ class Login extends React.Component {
 
     return (
       <div className="loginPage">
+      <ToastContainer autoClose={3000} />
         <Container className="loginContainer">
           <Transition transitionOnMount animation="fade up">
             <Grid divided>
@@ -301,11 +304,18 @@ class Login extends React.Component {
 
   handleLedgerLogin () {
     const { file } = this.state;
-
-    romeo.guard.LedgerGuard.build({ debug: true }).then(
-      guard => this.setState({ loading: true },
-        () => this.props.login(guard, file))
-      );
+    this.setState({ loading: true });
+    romeo.guard.LedgerGuard.build({ debug: true })
+      .then(guard => this.props.login(guard, file))
+      .catch((e) => {
+        this.setState({ loading: false });
+        showInfo(
+          <span>
+            <Icon name="close" />&nbsp;
+            { "Cannot connect to Ledger. Are you sure it's plugged in and the IOTA app is open?" }
+          </span>, 5000, "error");
+        console.error('LedgerGuard.build error', e);
+      });
   }
 
   handleFiles(files) {
