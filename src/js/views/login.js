@@ -312,7 +312,7 @@ class Login extends React.Component {
         showInfo(
           <span>
             <Icon name="close" />&nbsp;
-            { "Cannot connect to Ledger. Are you sure it's plugged in and the IOTA app is open?" }
+            { e.message }
           </span>, 5000, "error");
         console.error('LedgerGuard.build error', e);
       });
