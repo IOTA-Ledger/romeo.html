@@ -61,7 +61,7 @@ class Login extends React.Component {
 
     return (
       <div className="loginPage">
-      <ToastContainer autoClose={3000} />
+        <ToastContainer autoClose={3000} />
         <Container className="loginContainer">
           <Transition transitionOnMount animation="fade up">
             <Grid divided>
@@ -92,11 +92,11 @@ class Login extends React.Component {
                   stretched
                 >
                   <Button.Group fluid>
-                    <Button style={{ width: '50%'}} active={mode === 'username'}
+                    <Button style={{ width: '50%' }} active={mode === 'username'}
                       onClick={() => this.setState({ mode: 'username' })}>
                       <Icon name='user' /> Username/Pass
                     </Button>
-                    <Button style={{ width: '50%'}} active={mode === 'ledger'}
+                    <Button style={{ width: '50%' }} active={mode === 'ledger'}
                       onClick={() => this.setState({ mode: 'ledger' })}>
                       <Icon name='usb' /> Ledger Nano
                     </Button>
@@ -112,7 +112,7 @@ class Login extends React.Component {
     );
   }
 
-  renderUsernameLogin () {
+  renderUsernameLogin() {
     return (
       <Grid.Row centered stretched>
         <Grid.Column
@@ -146,7 +146,7 @@ class Login extends React.Component {
     )
   }
 
-  renderLedgerLogin () {
+  renderLedgerLogin() {
     const { loading } = this.state;
 
     return (
@@ -200,10 +200,10 @@ class Login extends React.Component {
 
     const passwordLabel = romeo.utils.validate.isPassword(password)
       .valid ? null : (
-      <Label pointing color="red">
-        12+ chars, 1 uppercase, 1 number, 1 symbol
+        <Label pointing color="red">
+          12+ chars, 1 uppercase, 1 number, 1 symbol
       </Label>
-    );
+      );
 
     const ready = !userLabel && !passwordLabel;
     const checksumLabel = ready ? (
@@ -302,19 +302,19 @@ class Login extends React.Component {
     }
   }
 
-  handleLedgerLogin () {
+  handleLedgerLogin() {
     const { file } = this.state;
     this.setState({ loading: true });
     romeo.guard.LedgerGuard.build({ debug: true })
       .then(guard => this.props.login(guard, file))
-      .catch((e) => {
+      .catch((error) => {
         this.setState({ loading: false });
         showInfo(
           <span>
             <Icon name="close" />&nbsp;
-            { e.message }
+            {(error && error.message) || 'Failed initializing LedgerGuard!'}
           </span>, 5000, "error");
-        console.error('LedgerGuard.build error', e);
+        console.error('LedgerGuard.build error', error);
       });
   }
 

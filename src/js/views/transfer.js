@@ -724,7 +724,7 @@ class Transfer extends React.Component {
               <Icon name="close" />&nbsp;
               {(error && error.message) || 'Failed syncing page!'}
             </span>,
-            3000,
+            5000,
             'error'
           );
         });
@@ -737,7 +737,7 @@ class Transfer extends React.Component {
             <Icon name="close" />&nbsp;
             {(error && error.message) || 'Failed sending the transfers!'}
           </span>,
-          3000,
+          5000,
           'error'
         );
         console.error('sendTransfers error', error);
