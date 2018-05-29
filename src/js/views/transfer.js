@@ -395,7 +395,7 @@ class Transfer extends React.Component {
     this.setState({ transfers: newTransfers });
   }
 
-  hasEnoughInputs () {
+  hasEnoughInputs() {
     const { transfers, donation, inputs } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
@@ -405,7 +405,7 @@ class Transfer extends React.Component {
       .reduce((t, i) => t + i.balance, 0) >= totalValue;
   }
 
-  hasSufficientFunds () {
+  hasSufficientFunds() {
     const { transfers, donation, inputs, autoInput } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
@@ -483,8 +483,8 @@ class Transfer extends React.Component {
           }
         />
       ) : (
-        this.renderInputTable1()
-      );
+          this.renderInputTable1()
+        );
 
     return [
       <Grid.Row key="checkbox">
@@ -542,8 +542,8 @@ class Transfer extends React.Component {
                 {!i.spent ? (
                   <Icon name="check" color="green" />
                 ) : (
-                  <Icon name="close" color="red" />
-                )}
+                    <Icon name="close" color="red" />
+                  )}
                 {i.spent ? (
                   <Popup
                     trigger={<span>{i.address}</span>}
@@ -551,8 +551,8 @@ class Transfer extends React.Component {
                     content="This address is marked as spent. If possible, do not use!"
                   />
                 ) : (
-                  i.address
-                )}
+                    i.address
+                  )}
               </Table.Cell>
               <Table.Cell textAlign="right">
                 <Responsive maxWidth={767}>
@@ -718,7 +718,16 @@ class Transfer extends React.Component {
             <Icon name="send" /> Transfer sent!
           </span>
         );
-        this.pageObject.sync(true, 7000);
+        this.pageObject.sync(true, 7000).catch(error => {
+          showInfo(
+            <span>
+              <Icon name="close" />&nbsp;
+              {(error && error.message) || 'Failed syncing page!'}
+            </span>,
+            3000,
+            'error'
+          );
+        });
       })
       .catch(error => {
         this.setState({ sending: false });
@@ -731,6 +740,7 @@ class Transfer extends React.Component {
           3000,
           'error'
         );
+        console.error('sendTransfers error', error);
       });
   }
 }

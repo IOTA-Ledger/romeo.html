@@ -27,7 +27,7 @@ class CurrentPageMenuItem extends React.Component {
     const { isSyncing, index } = page.page;
     const pageObject = romeo.pages.getByIndex(index).page;
     const sync = () => {
-      !isSyncing && romeo.pages.syncPage(pageObject, true, 40);
+      !isSyncing && syncPage(pageObject, true, 40);
     };
     const balance = pageObject.getBalance();
     const currentAddress = pageObject.getCurrentAddress();
@@ -74,11 +74,11 @@ class CurrentPageMenuItem extends React.Component {
             <span key="b">Balance: {formatIOTAAmount(balance).short}</span>
           ]
         ) : (
-          <Header as="h3" color="violet">
-            <Icon name="balance" />
-            <Header.Content>{formatIOTAAmount(balance).short}</Header.Content>
-          </Header>
-        )}
+            <Header as="h3" color="violet">
+              <Icon name="balance" />
+              <Header.Content>{formatIOTAAmount(balance).short}</Header.Content>
+            </Header>
+          )}
       </Menu.Item>
     );
     const seedItem = checksum && (
@@ -102,9 +102,9 @@ class CurrentPageMenuItem extends React.Component {
         trigger={seedItem}
         content={
           <span>
-              Copy page seed to clipboard. <br />
-              <strong>Keep your seeds SAFE and NEVER share them!</strong>
-            </span>
+            Copy page seed to clipboard. <br />
+            <strong>Keep your seeds SAFE and NEVER share them!</strong>
+          </span>
         }
       />
     );
@@ -140,11 +140,11 @@ class CurrentPageMenuItem extends React.Component {
     const popupContent = isSyncing ? (
       'This page is currently syncing.'
     ) : (
-      <span>
-        <strong>Sync this page</strong>. Note: the most recent page periodically
-        auto-synchronises!
+        <span>
+          <strong>Sync this page</strong>. Note: the most recent page periodically
+          auto-synchronises!
       </span>
-    );
+      );
 
     return (
       <Menu.Menu position="left">
@@ -179,6 +179,19 @@ class CurrentPageMenuItem extends React.Component {
       </Menu.Menu>
     );
   }
+}
+
+export function syncPage(page, force, priority) {
+  return page.sync(force, priority).catch(error => {
+    showInfo(
+      <span>
+        <Icon name="close" />&nbsp;
+          {(error && error.message) || 'Failed syncing page!'}
+      </span>,
+      3000,
+      'error'
+    );
+  });
 }
 
 export function copyData(data, message = 'Copied!', icon = 'check') {
