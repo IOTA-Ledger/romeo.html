@@ -326,7 +326,7 @@ class Home extends React.Component {
             })
           }
         >
-          Donate to Roman Semko
+          Donate to SemkoDev
         </Responsive>
         <Responsive
           as={Menu.Item}
