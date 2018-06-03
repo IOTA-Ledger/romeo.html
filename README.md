@@ -1,3 +1,9 @@
+# Ledger-Support for the Romeo IOTA Wallet
+
+Here we bring Ledger Nano S functionality to the Romeo wallet for IOTA.
+
+Instead of needing to enter your seed (which potentially exposes your seed to malicious parties), all address and signature generation is handed off to the Ledger Nano S. The seed never leaves the device, so you don't have to worry about someone stealing it. There are still other things to be aware of, so for the full documentation visit: [Ledger Nano S Documentation](https://github.com/IOTA-Ledger/blue-app-iota/blob/master/Ledger%20Nano%20S%20Documentation.md).
+
 # CarrIOTA Romeo - Ultra-Light-Ledger
 
 CarrIOTA Romeo is a lightweight ledger built on top of the IOTA Tangle.
@@ -49,7 +55,7 @@ This software is experimental. Use at your own risk!
 **Donations always welcome**:
 
 ```
-YHZIJOENEFSDMZGZA9WOGFTRXOFPVFFCDEYEFHPUGKEUAOTTMVLPSSNZNHRJD99WAVESLFPSGLMTUEIBDZRKBKXWZD
+AAJXXFJUEQHKPYIOUIUO9FWCMOAFBZAZPXIFRI9FLDQZJGHQENG9HNMODUZJCHR9RHHUSBHWJELGRDOWZRNWYLYCQW
 ```
 
 ## Authors
