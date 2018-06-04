@@ -8,6 +8,7 @@ import { get, linkToCurrentPage, showInfo } from '../romeo';
 import { formatIOTAAmount } from '../utils';
 import PageMenuItem from './page-menu-item';
 import deepHoc from './deep-hoc';
+import { getIOTAStatusMessage } from 'hw-app-iota';
 
 class CurrentPageMenuItem extends React.Component {
   render() {
@@ -186,9 +187,9 @@ export function syncPage(page, force, priority) {
     showInfo(
       <span>
         <Icon name="close" />&nbsp;
-          {(error && error.message) || 'Failed syncing page!'}
+          {getIOTAStatusMessage(error) || 'Failed syncing page!'}
       </span>,
-      5000,
+      20000,
       'error'
     );
   });

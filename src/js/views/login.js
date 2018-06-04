@@ -21,6 +21,7 @@ import {
 import { version } from '../../../package';
 import { updateRomeo } from '../reducers/romeo';
 import { login } from '../romeo';
+import { getIOTAStatusMessage } from 'hw-app-iota';
 
 import classes from './login.css';
 
@@ -312,8 +313,8 @@ class Login extends React.Component {
         showInfo(
           <span>
             <Icon name="close" />&nbsp;
-            {(error && error.message) || 'Failed initializing LedgerGuard!'}
-          </span>, 5000, "error");
+            {getIOTAStatusMessage(error) || 'Failed initializing LedgerGuard!'}
+          </span>, 20000, "error");
         console.error('LedgerGuard.build error', error);
       });
   }

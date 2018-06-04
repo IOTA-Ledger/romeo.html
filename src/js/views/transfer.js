@@ -23,6 +23,7 @@ import { searchSpentAddressThunk } from '../reducers/ui';
 import { formatIOTAAmount } from '../utils';
 import deepHoc from '../components/deep-hoc';
 import TransferRow from '../components/transfer-row';
+import { getIOTAStatusMessage } from 'hw-app-iota';
 
 import classes from './transfer.css';
 
@@ -722,9 +723,9 @@ class Transfer extends React.Component {
           showInfo(
             <span>
               <Icon name="close" />&nbsp;
-              {(error && error.message) || 'Failed syncing page!'}
+              {getIOTAStatusMessage(error) || 'Failed syncing page!'}
             </span>,
-            5000,
+            20000,
             'error'
           );
         });
@@ -735,9 +736,9 @@ class Transfer extends React.Component {
         showInfo(
           <span>
             <Icon name="close" />&nbsp;
-            {(error && error.message) || 'Failed sending the transfers!'}
+            {getIOTAStatusMessage(error) || 'Failed sending the transfers!'}
           </span>,
-          5000,
+          20000,
           'error'
         );
         console.error('sendTransfers error', error);
