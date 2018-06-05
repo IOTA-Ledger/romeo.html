@@ -27,7 +27,7 @@ class CurrentPageMenuItem extends React.Component {
     const { isSyncing, index } = page.page;
     const pageObject = romeo.pages.getByIndex(index).page;
     const sync = () => {
-      !isSyncing && syncPage(pageObject, false, 40);
+      !isSyncing && syncPage(pageObject, true, 40);
     };
     const balance = pageObject.getBalance();
     const currentAddress = pageObject.getCurrentAddress();
