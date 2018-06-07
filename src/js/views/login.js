@@ -302,20 +302,22 @@ class Login extends React.Component {
     }
   }
 
-  handleLedgerLogin() {
+  async handleLedgerLogin() {
     const { file } = this.state;
     this.setState({ loading: true });
-    romeo.guard.LedgerGuard.build({ debug: true })
-      .then(guard => this.props.login(guard, file))
-      .catch((error) => {
-        this.setState({ loading: false });
-        showInfo(
-          <span>
-            <Icon name="close" />&nbsp;
-            {(error && error.message) || 'Failed initializing LedgerGuard!'}
-          </span>, 5000, "error");
-        console.error('LedgerGuard.build error', error);
-      });
+
+    try {
+      const guard = await romeo.guard.LedgerGuard.build({ debug: true });
+      await this.props.login(guard, file);
+    } catch (error) {
+      this.setState({ loading: false });
+      showInfo(
+        <span>
+          <Icon name="close" />&nbsp;
+          {(error && error.message) || 'Failed initializing LedgerGuard!'}
+        </span>, 5000, "error");
+      console.error('LedgerGuard.build error', error);
+    }
   }
 
   handleFiles(files) {
