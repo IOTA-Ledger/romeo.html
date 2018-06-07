@@ -714,6 +714,7 @@ class Transfer extends React.Component {
   async sendTransfer() {
     const { history } = this.props;
     const { donation, transfers, autoInput, forceInput, inputs } = this.state;
+    transfers.forEach(t => (t.tag = t.tag ? t.tag : ""));
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
     const txs = transfers.slice();
