@@ -403,20 +403,20 @@ class Transfer extends React.Component {
     });
     this.setState({ transfers: newTransfers });
   }
-    
+
   getSpentInputs() {
     const { inputs } = this.state;
     return inputs.filter(i => (i.spent && i.selected));
   }
-    
+
   inputNotTransfer(input) {
     const { transfers } = this.state;
-        
-    for(const k in transfers) {
-      if(transfers[k].address.substring(0, 81) == input.address.substring(0, 81))
+
+    for (const k in transfers) {
+      if (transfers[k].address.substring(0, 81) == input.address.substring(0, 81))
         return false;
     }
-        
+
     return true;
   }
 
@@ -435,8 +435,8 @@ class Transfer extends React.Component {
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
     const unspentInputs = inputs.filter(i => ((autoInput && !i.spent) ||
-       i.selected) && this.inputNotTransfer(i));
-                                        
+      i.selected) && this.inputNotTransfer(i));
+
     return unspentInputs.reduce((t, i) => t + i.balance, 0) >= totalValue;
   }
 
@@ -579,15 +579,15 @@ class Transfer extends React.Component {
                     position="top left"
                     content="This address is marked as spent. If possible, do not use!"
                   />
-                ) : ( invalidInput.includes(i) ? (
+                ) : (invalidInput.includes(i) ? (
                   <Popup
                     trigger={<span>{i.address}</span>}
                     position="top left"
                     content="Can't use transfer address as input!"
                   />
                 ) : (
-                  i.address
-                ))}
+                    i.address
+                  ))}
               </Table.Cell>
               <Table.Cell textAlign="right">
                 <Responsive maxWidth={767}>
@@ -711,7 +711,7 @@ class Transfer extends React.Component {
     this.setState({ inputs: newInputs });
   }
 
-  sendTransfer() {
+  async sendTransfer() {
     const { history } = this.props;
     const { donation, transfers, autoInput, forceInput, inputs } = this.state;
     const totalValue =
@@ -742,41 +742,31 @@ class Transfer extends React.Component {
       }
     }
 
-    this.setState({ sending: true });
-    this.pageObject
-      .sendTransfers(txs, txInputs, null, null, 7000)
-      .then(() => {
-        this.setState({ sending: false });
-        history.push(`/page/${this.pageObject.opts.index + 1}`);
-        showInfo(
-          <span>
-            <Icon name="send" /> Transfer sent!
+    try {
+      this.setState({ sending: true });
+      await this.pageObject.sendTransfers(txs, txInputs, null, null, 7000);
+      this.setState({ sending: false });
+      history.push(`/page/${this.pageObject.opts.index + 1}`);
+      showInfo(
+        <span>
+          <Icon name="send" /> Transfer sent!
           </span>
-        );
-        this.pageObject.sync(true, 7000).catch(error => {
-          showInfo(
-            <span>
-              <Icon name="close" />&nbsp;
-              {getIOTAStatusMessage(error) || 'Failed syncing page!'}
-            </span>,
-            20000,
-            'error'
-          );
-        });
-      })
-      .catch(error => {
-        this.setState({ sending: false });
-        history.push(`/page/${this.pageObject.opts.index + 1}`);
-        showInfo(
-          <span>
-            <Icon name="close" />&nbsp;
-            {getIOTAStatusMessage(error) || 'Failed sending the transfers!'}
-          </span>,
-          20000,
-          'error'
-        );
-        console.error('sendTransfers error', error);
-      });
+      );
+      // sync after transaction completed
+      await this.pageObject.sync(true, 7000);
+    } catch (error) {
+      this.setState({ sending: false });
+      history.push(`/page/${this.pageObject.opts.index + 1}`);
+      showInfo(
+        <span>
+          <Icon name="close" />&nbsp;
+          {getIOTAStatusMessage(error) || 'Failed sending the transfers!'}
+        </span>,
+        5000,
+        'error'
+      );
+      console.error('sendTransfers error', error);
+    }
   }
 }
 
