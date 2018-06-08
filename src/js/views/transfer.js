@@ -23,7 +23,6 @@ import { searchSpentAddressThunk } from '../reducers/ui';
 import { formatIOTAAmount } from '../utils';
 import deepHoc from '../components/deep-hoc';
 import TransferRow from '../components/transfer-row';
-import { getIOTAStatusMessage } from 'hw-app-iota';
 
 import classes from './transfer.css';
 
@@ -424,8 +423,8 @@ class Transfer extends React.Component {
     const { transfers, donation, inputs } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
-    const unspentInputs = inputs.filter(i => (!i.spent || i.selected) && this.inputNotTransfer(i));
-    return unspentInputs
+    const validInputs = inputs.filter(i => (!i.spent || i.selected) && this.inputNotTransfer(i));
+    return validInputs
       .sort((a, b) => b.balance - a.balance).slice(0, this.romeo.guard.getMaxInputs())
       .reduce((t, i) => t + i.balance, 0) >= totalValue;
   }
@@ -434,10 +433,10 @@ class Transfer extends React.Component {
     const { transfers, donation, inputs, autoInput } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
-    const unspentInputs = inputs.filter(i => ((autoInput && !i.spent) ||
+    const validInputs = inputs.filter(i => ((autoInput && !i.spent) ||
       i.selected) && this.inputNotTransfer(i));
 
-    return unspentInputs.reduce((t, i) => t + i.balance, 0) >= totalValue;
+    return validInputs.reduce((t, i) => t + i.balance, 0) >= totalValue;
   }
 
   renderTotalStep0() {
@@ -727,17 +726,17 @@ class Transfer extends React.Component {
     if (autoInput && !forceInput) {
       txInputs = [];
       let inputValue = 0;
-      const unspent = inputs.filter(i => !i.spent && this.inputNotTransfer(i));
-      const spent = inputs.filter(i => i.spent && this.inputNotTransfer(i));
-      for (let x = 0; x < unspent.length; x++) {
-        txInputs.push(unspent[x]);
-        inputValue += unspent[x].balance;
+      const validUnspent = inputs.filter(i => !i.spent && this.inputNotTransfer(i));
+      const validSpent = inputs.filter(i => i.spent && this.inputNotTransfer(i));
+      for (let x = 0; x < validUnspent.length; x++) {
+        txInputs.push(validUnspent[x]);
+        inputValue += validUnspent[x].balance;
         if (inputValue >= totalValue) break;
       }
       if (inputValue < totalValue) {
-        for (let x = 0; x < spent.length; x++) {
-          txInputs.push(spent[x]);
-          inputValue += spent[x].balance;
+        for (let x = 0; x < validSpent.length; x++) {
+          txInputs.push(validSpent[x]);
+          inputValue += validSpent[x].balance;
           if (inputValue >= totalValue) break;
         }
       }
@@ -761,7 +760,7 @@ class Transfer extends React.Component {
       showInfo(
         <span>
           <Icon name="close" />&nbsp;
-          {getIOTAStatusMessage(error) || 'Failed sending the transfers!'}
+          {(error && error.message) || 'Failed sending the transfers!'}
         </span>,
         5000,
         'error'
