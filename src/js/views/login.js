@@ -314,7 +314,7 @@ class Login extends React.Component {
       showInfo(
         <span>
           <Icon name="close" />&nbsp;
-          {error.ledgerErrorMessage || (error && error.message) || 'Failed initializing LedgerGuard!'}
+          {(error && error.message) || 'Failed initializing LedgerGuard!'}
         </span>, 5000, "error");
       console.error('LedgerGuard.build error', error);
     }
