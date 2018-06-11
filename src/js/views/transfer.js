@@ -248,6 +248,7 @@ class Transfer extends React.Component {
     const { transfers, donation } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
+    const usingSpentInputs = this.getSpentInputs().length;
     const donationRow =
       donation.value > 0 ? (
         <Table.Row positive>
@@ -275,6 +276,12 @@ class Transfer extends React.Component {
             </Header>
           </Table.Cell>
         </Table.Row>
+      ) : null;
+    const spentWarning =
+      (usingSpentInputs) ? (
+        <Header as="h3" textAlign="center" color="red">WARNING: You are sending from an already spent address.
+        <br />This will decrease the security of this address significantly.
+        <br />Ensure you do not receive funds to this address again!</Header>
       ) : null;
 
     return (
@@ -338,6 +345,7 @@ class Transfer extends React.Component {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column computer={12} tablet={16} mobile={16} textAlign="right">
+            {spentWarning}
             <Divider />
             <Button color="olive" size="large" onClick={this.sendTransfer}>
               <Icon name="send" /> &nbsp; Send transfer(s)
@@ -395,12 +403,28 @@ class Transfer extends React.Component {
     this.setState({ transfers: newTransfers });
   }
 
+  getSpentInputs() {
+    const { inputs } = this.state;
+    return inputs.filter(i => (i.spent && i.selected));
+  }
+
+  inputNotTransfer(input) {
+    const { transfers } = this.state;
+
+    for (const k in transfers) {
+      if (transfers[k].address.substring(0, 81) == input.address.substring(0, 81))
+        return false;
+    }
+
+    return true;
+  }
+
   hasEnoughInputs() {
     const { transfers, donation, inputs } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
-    const unspentInputs = inputs.filter(i => (!i.spent || i.selected));
-    return unspentInputs
+    const validInputs = inputs.filter(i => (!i.spent || i.selected) && this.inputNotTransfer(i));
+    return validInputs
       .sort((a, b) => b.balance - a.balance).slice(0, this.romeo.guard.getMaxInputs())
       .reduce((t, i) => t + i.balance, 0) >= totalValue;
   }
@@ -409,8 +433,10 @@ class Transfer extends React.Component {
     const { transfers, donation, inputs, autoInput } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
-    const unspentInputs = inputs.filter(i => ((autoInput || !i.spent) || i.selected));
-    return unspentInputs.reduce((t, i) => t + i.balance, 0) >= totalValue;
+    const validInputs = inputs.filter(i => ((autoInput && !i.spent) ||
+      i.selected) && this.inputNotTransfer(i));
+
+    return validInputs.reduce((t, i) => t + i.balance, 0) >= totalValue;
   }
 
   renderTotalStep0() {
@@ -494,7 +520,7 @@ class Transfer extends React.Component {
             disabled={forceInput}
             onChange={() => this.setState({ autoInput: !autoInput })}
             label="Automatic source selection"
-            checked={autoInput || forceInput}
+            checked={autoInput && !forceInput}
           />
         </Grid.Column>
       </Grid.Row>,
@@ -514,6 +540,7 @@ class Transfer extends React.Component {
       .filter(i => i.selected)
       .reduce((t, i) => t + i.balance, 0);
     const outstanding = Math.max(0, totalValue - selectedValue);
+    const invalidInput = inputs.filter(i => !this.inputNotTransfer(i));
 
     return (
       <Table compact celled definition>
@@ -534,12 +561,13 @@ class Transfer extends React.Component {
               <Table.Cell>
                 <Checkbox
                   toggle
+                  disabled={invalidInput.includes(i)}
                   onChange={() => this.handleChange1(x)}
                   checked={i.selected}
                 />
               </Table.Cell>
               <Table.Cell className="dont-break-out">
-                {!i.spent ? (
+                {(!i.spent && !invalidInput.includes(i)) ? (
                   <Icon name="check" color="green" />
                 ) : (
                     <Icon name="close" color="red" />
@@ -550,9 +578,15 @@ class Transfer extends React.Component {
                     position="top left"
                     content="This address is marked as spent. If possible, do not use!"
                   />
+                ) : (invalidInput.includes(i) ? (
+                  <Popup
+                    trigger={<span>{i.address}</span>}
+                    position="top left"
+                    content="Can't use transfer address as input!"
+                  />
                 ) : (
                     i.address
-                  )}
+                  ))}
               </Table.Cell>
               <Table.Cell textAlign="right">
                 <Responsive maxWidth={767}>
@@ -679,6 +713,7 @@ class Transfer extends React.Component {
   async sendTransfer() {
     const { history } = this.props;
     const { donation, transfers, autoInput, forceInput, inputs } = this.state;
+    transfers.forEach(t => (t.tag = t.tag ? t.tag : ""));
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
     const txs = transfers.slice();
@@ -691,17 +726,17 @@ class Transfer extends React.Component {
     if (autoInput && !forceInput) {
       txInputs = [];
       let inputValue = 0;
-      const unspent = inputs.filter(i => !i.spent);
-      const spent = inputs.filter(i => i.spent);
-      for (let x = 0; x < unspent.length; x++) {
-        txInputs.push(unspent[x]);
-        inputValue += unspent[x].balance;
+      const validUnspent = inputs.filter(i => !i.spent && this.inputNotTransfer(i));
+      const validSpent = inputs.filter(i => i.spent && this.inputNotTransfer(i));
+      for (let x = 0; x < validUnspent.length; x++) {
+        txInputs.push(validUnspent[x]);
+        inputValue += validUnspent[x].balance;
         if (inputValue >= totalValue) break;
       }
       if (inputValue < totalValue) {
-        for (let x = 0; x < spent.length; x++) {
-          txInputs.push(spent[x]);
-          inputValue += spent[x].balance;
+        for (let x = 0; x < validSpent.length; x++) {
+          txInputs.push(validSpent[x]);
+          inputValue += validSpent[x].balance;
           if (inputValue >= totalValue) break;
         }
       }
@@ -725,7 +760,7 @@ class Transfer extends React.Component {
       showInfo(
         <span>
           <Icon name="close" />&nbsp;
-            {(error && error.message) || 'Failed sending the transfers!'}
+          {(error && error.message) || 'Failed sending the transfers!'}
         </span>,
         5000,
         'error'

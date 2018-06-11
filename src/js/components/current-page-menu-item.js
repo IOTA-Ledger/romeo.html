@@ -188,7 +188,7 @@ export function syncPage(page, force, priority) {
         <Icon name="close" />&nbsp;
           {(error && error.message) || 'Failed syncing page!'}
       </span>,
-      5000,
+      20000,
       'error'
     );
   });
