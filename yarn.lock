@@ -2,16 +2,16 @@
 # yarn lockfile v1
 
 
-"@ledgerhq/hw-transport-u2f@^4.7.3":
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-u2f/-/hw-transport-u2f-4.12.0.tgz#151c7ccaf14627bd26b95a9f4863e4eb76d09865"
+"@ledgerhq/hw-transport-u2f@^4.13.0":
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-u2f/-/hw-transport-u2f-4.13.0.tgz#8a9e9bbb58f32b1b4fcc8ac6a83ea44e2e4ac94a"
   dependencies:
-    "@ledgerhq/hw-transport" "^4.12.0"
+    "@ledgerhq/hw-transport" "^4.13.0"
     u2f-api "0.2.7"
 
-"@ledgerhq/hw-transport@^4.12.0":
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.12.0.tgz#1cbfb2462728e46297d8ed215b60ac7e3089ba92"
+"@ledgerhq/hw-transport@^4.13.0":
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.13.0.tgz#463043200c96c91379318052ad4dbe8c80d95cf5"
   dependencies:
     events "^2.0.0"
 
@@ -1406,11 +1406,21 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
-color-convert@^1.3.0, color-convert@^1.9.0:
+color-convert@^1.3.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.1.tgz#c1261107aeb2f294ebffec9ed9ecad529a6097ed"
   dependencies:
     color-name "^1.1.1"
+
+color-convert@^1.9.0:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.2.tgz#49881b8fba67df12a96bdf3f56c0aab9e7913147"
+  dependencies:
+    color-name "1.1.1"
+
+color-name@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.1.tgz#4b1415304cf50028ea81643643bd82ea05803689"
 
 color-name@^1.0.0, color-name@^1.1.1:
   version "1.1.3"
@@ -2798,7 +2808,7 @@ https-browserify@^1.0.0:
 
 "hw-app-iota@git+https://github.com/IOTA-Ledger/hw-app-iota.js.git":
   version "0.1.1"
-  resolved "git+https://github.com/IOTA-Ledger/hw-app-iota.js.git#a9cf8d3d0a769b11fad623495dddca8c1aff4766"
+  resolved "git+https://github.com/IOTA-Ledger/hw-app-iota.js.git#216c6920e7b5457193ec0f29cb45cfc21cc04a52"
   dependencies:
     bip32-path "^0.4.2"
     iota.lib.js "^0.4.7"
@@ -3193,8 +3203,8 @@ is-primitive@^2.0.0:
   resolved "https://registry.yarnpkg.com/is-primitive/-/is-primitive-2.0.0.tgz#207bab91638499c07b2adf240a41a87210034575"
 
 is-primitive@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/is-primitive/-/is-primitive-3.0.0.tgz#ddc27a9f9ebe7bed4b4f308acc9abb1c7a025757"
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/is-primitive/-/is-primitive-3.0.1.tgz#98c4db1abff185485a657fc2905052b940524d05"
 
 is-redirect@^1.0.0:
   version "1.0.0"
@@ -3441,8 +3451,8 @@ level-errors@^1.0.4, level-errors@~1.1.0:
     errno "~0.1.1"
 
 level-iterator-stream@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/level-iterator-stream/-/level-iterator-stream-2.0.0.tgz#e0fe4273a0322177c81bb87684016bb5b90a98b4"
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/level-iterator-stream/-/level-iterator-stream-2.0.1.tgz#3ef8309d238578cd8730b2a15b764f26862d9e63"
   dependencies:
     inherits "^2.0.1"
     readable-stream "^2.0.5"
@@ -5370,9 +5380,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
 
 "romeo.lib@https://github.com/IOTA-Ledger/romeo.lib.git#feature/ledger-support":
   version "0.1.5"
-  resolved "https://github.com/IOTA-Ledger/romeo.lib.git#642de58b17cb12e90bb9d49f0b801e406882f9c9"
+  resolved "https://github.com/IOTA-Ledger/romeo.lib.git#698152a48a48954ca44ddbddf825640fca0d0aa7"
   dependencies:
-    "@ledgerhq/hw-transport-u2f" "^4.7.3"
+    "@ledgerhq/hw-transport-u2f" "^4.13.0"
     async "^2.6.0"
     better-queue "^3.8.6"
     better-queue-memory "^1.0.2"
