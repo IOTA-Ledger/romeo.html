@@ -57,7 +57,7 @@ class Transfer extends React.Component {
       ],
       donation: {
         address: this.props.donationAddress,
-        tag: '999CARRIOTAROMEODONATION999',
+        tag: '999DEVIOTAROMEODONATION999',
         value: 0,
         valid: true,
         identifier: romeo.utils.createIdentifier()
