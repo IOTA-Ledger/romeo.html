@@ -65,7 +65,7 @@ class Login extends React.Component {
                   <Header as="h2" color="purple" textAlign="center">
                     <div className="romeoLogo" />
                     <br />
-                    CarrIOTA Romeo
+                    Deviota Romeo
                     <Header.Subheader>
                       Ultra-Light Ledger v.{version}
                     </Header.Subheader>
