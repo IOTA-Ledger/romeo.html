@@ -153,7 +153,7 @@ class Home extends React.Component {
             <div className="romeoLogo" />
             <Header.Content>
               Ultra-Light Ledger
-              <Header.Subheader>CarrIOTA Romeo v.{version}</Header.Subheader>
+              <Header.Subheader>Deviota Romeo v.{version}</Header.Subheader>
             </Header.Content>
           </Header>
         </Responsive>

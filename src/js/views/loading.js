@@ -30,7 +30,7 @@ function LoadingView({ jobs, isOnline, provider }) {
         <Header as="h2" icon inverted>
           <Icon name="spinner" loading />
           <Header.Content>
-            Loading CarrIOTA Romeo
+            Loading Deviota Romeo
             <Header.Subheader>{info}</Header.Subheader>
           </Header.Content>
         </Header>
