@@ -20,6 +20,8 @@ You can use command-line tools on your OS or upload the file at [OnlineMD5](http
 
 **NOTE**: Safari is currently NOT supported!
 
+**NOTE**: latest released version is available as statically hosted page here at GitLab: https://semkodev.gitlab.io/romeo.html/
+
 ## How to compile locally
 
 Clone or download the repository. Then run:
