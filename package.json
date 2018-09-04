@@ -1,6 +1,6 @@
 {
   "name": "@semkodev/romeo.html",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Lightweight Ledger built on top of IOTA",
   "main": "index.js",
   "author": "Roman Semko",
