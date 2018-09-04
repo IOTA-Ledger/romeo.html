@@ -1,0 +1,29 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - publish
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - apk update
+  - apk add npm yarn
+  - yarn install
+
+publish:static:
+  stage: publish
+  artifacts:
+    paths:
+      - dist
+  only:
+    - /v\d*\.\d*\.\d*/
+  except:
+    - branches
+  script:
+    # build the package
+    - npm run build
