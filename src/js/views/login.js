@@ -1,5 +1,5 @@
 import React from "react";
-import romeo from "romeo.lib";
+import romeo from "@semkodev/romeo.lib";
 import { connect } from "react-redux";
 import ReactFileReader from "react-file-reader";
 import { Redirect } from "react-router-dom";

@@ -16,7 +16,7 @@ import {
   Checkbox,
   Popup
 } from "semantic-ui-react";
-import romeo from "romeo.lib";
+import romeo from "@semkodev/romeo.lib";
 import Nav from "../components/nav";
 import { get, showInfo } from "../romeo";
 import { searchSpentAddressThunk } from "../reducers/ui";
