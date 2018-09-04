@@ -12,7 +12,7 @@ cache:
 
 before_script:
   - apk update
-  - apk add npm yarn
+  - apk add npm yarn python g++ make
   - yarn install
 
 publish:static:
