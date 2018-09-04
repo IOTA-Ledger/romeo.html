@@ -12,14 +12,14 @@ cache:
 
 before_script:
   - apk update
-  - apk add npm yarn python g++ make
+  - apk add npm yarn python g++ make util-linux
   - yarn install
 
 publish:static:
   stage: publish
   artifacts:
     paths:
-      - dist
+      - public
   only:
     - /v\d*\.\d*\.\d*/
   except:
@@ -27,3 +27,6 @@ publish:static:
   script:
     # build the package
     - npm run build
+    - mkdir .public
+    - cp -r dist/* .public
+    - mv .public public
