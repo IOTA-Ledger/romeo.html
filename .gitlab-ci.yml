@@ -4,7 +4,7 @@ services:
   - docker:dind
 
 stages:
-  - publish
+  - deploy
 
 cache:
   paths:
@@ -15,8 +15,8 @@ before_script:
   - apk add npm yarn python g++ make util-linux
   - yarn install
 
-publish:static:
-  stage: publish
+pages:
+  stage: deploy
   artifacts:
     paths:
       - public
