@@ -4,16 +4,27 @@ services:
   - docker:dind
 
 stages:
+  - build
   - deploy
 
 cache:
   paths:
     - node_modules/
 
-before_script:
-  - apk update
-  - apk add npm yarn python g++ make util-linux
-  - yarn install
+build:
+  stage: build
+  artifacts:
+    untracked: true
+  only:
+    - /v\d*\.\d*\.\d*/
+  except:
+    - branches
+  script:
+    - apk update
+    - apk add npm yarn python g++ make util-linux
+    - yarn install
+    # build the package
+    - npm run build
 
 pages:
   stage: deploy
@@ -24,9 +35,9 @@ pages:
     - /v\d*\.\d*\.\d*/
   except:
     - branches
+  dependencies:
+    - build
   script:
-    # build the package
-    - npm run build
     - mkdir .public
     - cp -r dist/* .public
     - mv .public public
