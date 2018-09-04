@@ -6,9 +6,10 @@
   "author": "Roman Semko",
   "license": "ISC",
   "scripts": {
-    "fix": "prettier --single-quote --write src/**/* src/js/**/* package.json *.md",
+    "fix":
+      "prettier --single-quote --write src/**/* src/js/**/* package.json *.md",
     "clean": "rimraf dist",
-    "dist": "parcel build src/index.html --public-url \"/\"",
+    "dist": "parcel build src/index.html --public-url \"/romeo.html/\"",
     "pack": "yarn run build && node ./pack.js",
     "build": "yarn run clean && yarn run dist",
     "run": "parcel src/index.html",
