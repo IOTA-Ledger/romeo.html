@@ -102,9 +102,9 @@ class CurrentPageMenuItem extends React.Component {
         trigger={seedItem}
         content={
           <span>
-              Copy page seed to clipboard. <br />
-              <strong>Keep your seeds SAFE and NEVER share them!</strong>
-            </span>
+            Copy page seed to clipboard. <br />
+            <strong>Keep your seeds SAFE and NEVER share them!</strong>
+          </span>
         }
       />
     );

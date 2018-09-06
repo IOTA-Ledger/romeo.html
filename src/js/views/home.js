@@ -1,8 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Route, Switch } from "react-router";
-import { Link, Redirect } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Route, Switch } from 'react-router';
+import { Link, Redirect } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Sidebar,
   Menu,
@@ -13,23 +13,23 @@ import {
   Modal,
   Button,
   Responsive
-} from "semantic-ui-react";
-import { version } from "../../../package";
-import { terminateRomeo } from "../reducers/romeo";
-import { logout, get, linkToCurrentPage } from "../romeo";
-import PageMenu from "../components/page-menu";
-import CurrentPageMenuItem from "../components/current-page-menu-item";
-import OnlineMonitor from "../components/online-monitor";
-import deepHoc from "../components/deep-hoc";
-import Page from "./page";
-import Transfer from "./transfer";
-import Loading from "./loading";
-import NewPage from "./new-page";
+} from 'semantic-ui-react';
+import { version } from '../../../package';
+import { terminateRomeo } from '../reducers/romeo';
+import { logout, get, linkToCurrentPage } from '../romeo';
+import PageMenu from '../components/page-menu';
+import CurrentPageMenuItem from '../components/current-page-menu-item';
+import OnlineMonitor from '../components/online-monitor';
+import deepHoc from '../components/deep-hoc';
+import Page from './page';
+import Transfer from './transfer';
+import Loading from './loading';
+import NewPage from './new-page';
 
 const ADDRESS =
-  "YHZIJOENEFSDMZGZA9WOGFTRXOFPVFFCDEYEFHPUGKEUAOTTMVLPSSNZNHRJD99WAVESLFPSGLMTUEIBDZRKBKXWZD";
+  'YHZIJOENEFSDMZGZA9WOGFTRXOFPVFFCDEYEFHPUGKEUAOTTMVLPSSNZNHRJD99WAVESLFPSGLMTUEIBDZRKBKXWZD';
 
-import classes from "./home.css";
+import classes from './home.css';
 
 class Home extends React.Component {
   constructor(props) {
@@ -109,9 +109,9 @@ class Home extends React.Component {
         }
         content={
           <span>
-                Next time you login this checksum should match! &nbsp;
+            Next time you login this checksum should match! &nbsp;
             <strong>Remember it!</strong>
-              </span>
+          </span>
         }
       />
     );
@@ -119,7 +119,7 @@ class Home extends React.Component {
       <Menu.Item onClick={this.toggleMenu}>
         <Icon
           color="grey"
-          name={showMenu ? "folder open" : "folder"}
+          name={showMenu ? 'folder open' : 'folder'}
           size="big"
         />
       </Menu.Item>
@@ -167,7 +167,7 @@ class Home extends React.Component {
             trigger={
               <Menu.Item onClick={this.backupLedger}>
                 <Icon
-                  name={backingUp ? "spinner" : "save"}
+                  name={backingUp ? 'spinner' : 'save'}
                   color="violet"
                   size="big"
                   loading={backingUp}
@@ -183,7 +183,7 @@ class Home extends React.Component {
           <Menu.Item onClick={this.toggleMobileMenu}>
             <Icon
               name="bars"
-              color={showMobileMenu ? "green" : "grey"}
+              color={showMobileMenu ? 'green' : 'grey'}
               size="big"
             />
           </Menu.Item>
@@ -217,7 +217,7 @@ class Home extends React.Component {
         />
         <Menu.Item onClick={this.backupLedger}>
           <Icon
-            name={backingUp ? "spinner" : "save"}
+            name={backingUp ? 'spinner' : 'save'}
             color="violet"
             size="big"
             loading={backingUp}
@@ -234,7 +234,7 @@ class Home extends React.Component {
     const trigger = (
       <Menu.Item>
         <Icon name="power" color="red" size="big" />
-        {withText ? "Logout" : ""}
+        {withText ? 'Logout' : ''}
       </Menu.Item>
     );
     return (
@@ -272,7 +272,7 @@ class Home extends React.Component {
             onClick={this.backupLedger}
             disabled={backingUp}
           >
-            <Icon name={backingUp ? "spinner" : "save"} loading={backingUp} />
+            <Icon name={backingUp ? 'spinner' : 'save'} loading={backingUp} />
             Download backup
           </Button>
           <Button color="red" inverted onClick={() => location.reload()}>
@@ -306,8 +306,8 @@ class Home extends React.Component {
           Crafted with &nbsp;<Icon
             name="heart"
             color="red"
-            style={{ display: "inline-block" }}
-          />{" "}
+            style={{ display: 'inline-block' }}
+          />{' '}
           at&nbsp;
           <a href="https://twitter.com/RomanSemko" target="_blank">
             SemkoDev
@@ -358,14 +358,14 @@ class Home extends React.Component {
   }
 
   _downloadTxtFile(data) {
-    const element = document.createElement("a");
-    const file = new Blob([data], { type: "text/plain" });
-    element.id = "downloadLink";
+    const element = document.createElement('a');
+    const file = new Blob([data], { type: 'text/plain' });
+    element.id = 'downloadLink';
     element.href = URL.createObjectURL(file);
     element.download = `romeo.backup.txt`;
     document.body.appendChild(element);
 
-    const downloadLink = document.getElementById("downloadLink");
+    const downloadLink = document.getElementById('downloadLink');
     downloadLink.click();
     document.body.removeChild(downloadLink);
 

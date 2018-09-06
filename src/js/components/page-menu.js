@@ -11,8 +11,8 @@ class PageMenu extends React.Component {
     const currentIndex = parseInt((params && params.page) || 0) - 1;
     const guard = get().guard;
     const checksum = guard.getChecksum() && (
-      <span>(checksum:{' '}
-        <strong>{guard.getChecksum()}</strong>){' '}
+      <span>
+        (checksum: <strong>{guard.getChecksum()}</strong>){' '}
       </span>
     );
 
@@ -24,9 +24,9 @@ class PageMenu extends React.Component {
           <Header.Subheader>
             <p>
               As you add new pages, they will appear here. Missing some pages?
-              First, make sure your login details {checksum}are correct. If there was
-              a snapshot, use your backup on login. If you did not create a
-              backup, use the manual restoration tool:
+              First, make sure your login details {checksum}are correct. If
+              there was a snapshot, use your backup on login. If you did not
+              create a backup, use the manual restoration tool:
             </p>
             <Button>Manual Page Restore coming soon!</Button>
           </Header.Subheader>

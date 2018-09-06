@@ -1,13 +1,9 @@
-import { romeo } from "@semkodev/romeo.lib";
-import { toast } from "react-toastify";
+import { romeo } from '@semkodev/romeo.lib';
+import { toast } from 'react-toastify';
 
 let romeoInstance = null;
 
-export async function login(
-  guard,
-  onChange,
-  restoreString = null
-) {
+export async function login(guard, onChange, restoreString = null) {
   if (romeoInstance) {
     await romeoInstance.terminate();
   }
@@ -26,18 +22,18 @@ export function get() {
   return romeoInstance;
 }
 
-export function showInfo(message, time = 3000, typeStr = "info") {
+export function showInfo(message, time = 3000, typeStr = 'info') {
   const type =
-    typeStr === "warning"
+    typeStr === 'warning'
       ? toast.TYPE.WARNING
-      : typeStr === "error"
+      : typeStr === 'error'
         ? toast.TYPE.ERROR
-        : typeStr === "success" ? toast.TYPE.SUCCESS : toast.TYPE.INFO;
+        : typeStr === 'success' ? toast.TYPE.SUCCESS : toast.TYPE.INFO;
   toast(message, {
     type,
     className: {
       //opacity: '0.7',
-      top: "60px"
+      top: '60px'
       //right: '-10px'
     },
     autoClose: time
@@ -93,9 +89,9 @@ export function wasSpent(address) {
 }
 
 const URL_MATCHES = {
-  "\\/page\\/(\\d+)$": "Page $1",
-  "\\/page\\/(\\d+)/transfer": "Send a new transfer",
-  "\\/page\\/(\\d+)/address/(.+)$": "Address $2"
+  '\\/page\\/(\\d+)$': 'Page $1',
+  '\\/page\\/(\\d+)/transfer': 'Send a new transfer',
+  '\\/page\\/(\\d+)/address/(.+)$': 'Address $2'
 };
 
 export function findRouteName(name) {

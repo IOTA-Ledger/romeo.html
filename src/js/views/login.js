@@ -1,8 +1,8 @@
-import React from "react";
-import romeo from "@semkodev/romeo.lib";
-import { connect } from "react-redux";
-import ReactFileReader from "react-file-reader";
-import { Redirect } from "react-router-dom";
+import React from 'react';
+import romeo from '@semkodev/romeo.lib';
+import { connect } from 'react-redux';
+import ReactFileReader from 'react-file-reader';
+import { Redirect } from 'react-router-dom';
 import {
   Container,
   Grid,
@@ -20,14 +20,14 @@ import { version } from '../../../package';
 import { updateRomeo } from '../reducers/romeo';
 import { login } from '../romeo';
 
-import classes from "./login.css";
+import classes from './login.css';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       loading: false,
       file: null,
       fileError: false,
@@ -50,12 +50,13 @@ class Login extends React.Component {
     const { mode } = this.state;
 
     if (isLoggedIn) {
-      return <Redirect to={{ pathname: fromPath || "/" }} />;
+      return <Redirect to={{ pathname: fromPath || '/' }} />;
     }
 
-    const loginView = mode === 'username'
-      ? this.renderUsernameLogin()
-      : this.renderLedgerLogin();
+    const loginView =
+      mode === 'username'
+        ? this.renderUsernameLogin()
+        : this.renderLedgerLogin();
 
     return (
       <div className="loginPage">
@@ -89,13 +90,19 @@ class Login extends React.Component {
                   stretched
                 >
                   <Button.Group fluid>
-                    <Button style={{ width: '50%'}} active={mode === 'username'}
-                      onClick={() => this.setState({ mode: 'username' })}>
-                      <Icon name='user' /> Username/Pass
+                    <Button
+                      style={{ width: '50%' }}
+                      active={mode === 'username'}
+                      onClick={() => this.setState({ mode: 'username' })}
+                    >
+                      <Icon name="user" /> Username/Pass
                     </Button>
-                    <Button style={{ width: '50%'}} active={mode === 'ledger'}
-                      onClick={() => this.setState({ mode: 'ledger' })}>
-                      <Icon name='usb' /> Ledger Nano
+                    <Button
+                      style={{ width: '50%' }}
+                      active={mode === 'ledger'}
+                      onClick={() => this.setState({ mode: 'ledger' })}
+                    >
+                      <Icon name="usb" /> Ledger Nano
                     </Button>
                   </Button.Group>
                 </Grid.Column>
@@ -109,7 +116,7 @@ class Login extends React.Component {
     );
   }
 
-  renderUsernameLogin () {
+  renderUsernameLogin() {
     return (
       <Grid.Row centered stretched>
         <Grid.Column
@@ -129,25 +136,24 @@ class Login extends React.Component {
           stretched
         >
           <p>
-            Please enter your username and password. If no ledgers exist
-            with the given credentials, a new one will be generated.
+            Please enter your username and password. If no ledgers exist with
+            the given credentials, a new one will be generated.
           </p>
           <p>
-            Spaces, unicode, emticons, everything is allowed. Make sure
-            to check (and remember) your checksum when the login button
-            becomes enabled - this is the only way to be sure that you
-            entered correct details!
+            Spaces, unicode, emticons, everything is allowed. Make sure to check
+            (and remember) your checksum when the login button becomes enabled -
+            this is the only way to be sure that you entered correct details!
           </p>
         </Grid.Column>
       </Grid.Row>
-    )
+    );
   }
 
-  renderLedgerLogin () {
+  renderLedgerLogin() {
     const { loading } = this.state;
 
     return (
-      <Grid.Row centered stretched reversed='mobile'>
+      <Grid.Row centered stretched reversed="mobile">
         <Grid.Column
           largeScreen={4}
           computer={6}
@@ -156,14 +162,13 @@ class Login extends React.Component {
           stretched
         >
           <p>
-            Use your <strong>Ledger Nano</strong> hardware wallet to
-            login into Romeo.
+            Use your <strong>Ledger Nano</strong> hardware wallet to login into
+            Romeo.
           </p>
           <p>
-            Please be aware that you either use Ledger nano or
-            username/password login. You cannot use both to login
-            into the same account as both are using different
-            techniques to generate and secure your ledger.
+            Please be aware that you either use Ledger nano or username/password
+            login. You cannot use both to login into the same account as both
+            are using different techniques to generate and secure your ledger.
           </p>
         </Grid.Column>
         <Grid.Column
@@ -175,15 +180,20 @@ class Login extends React.Component {
         >
           {this.renderUpload()}
           <Segment basic>
-            <Button fluid color='purple' size='huge'
+            <Button
+              fluid
+              color="purple"
+              size="huge"
               onClick={this.handleLedgerLogin}
-              disabled={loading} loading={loading}>
+              disabled={loading}
+              loading={loading}
+            >
               Login with Ledger
             </Button>
           </Segment>
         </Grid.Column>
       </Grid.Row>
-    )
+    );
   }
 
   renderForm() {
@@ -246,12 +256,12 @@ class Login extends React.Component {
     const { file, fileError, loading } = this.state;
     const color = file ? 'green' : fileError ? 'red' : null;
     const text = file
-      ? "Backup uploaded!"
-      : fileError ? "Wrong format!" : "Upload backup file first (if any)";
+      ? 'Backup uploaded!'
+      : fileError ? 'Wrong format!' : 'Upload backup file first (if any)';
     return (
       <ReactFileReader
         handleFiles={this.handleFiles}
-        fileTypes={[".txt"]}
+        fileTypes={['.txt']}
         multipleFiles={false}
       >
         <Button icon fluid color={color} type="button" disabled={loading}>
@@ -269,8 +279,8 @@ class Login extends React.Component {
           Crafted with &nbsp;<Icon
             name="heart"
             color="red"
-            style={{ display: "inline-block" }}
-          />{" "}
+            style={{ display: 'inline-block' }}
+          />{' '}
           at&nbsp;
           <a href="https://twitter.com/RomanSemko" target="_blank">
             SemkoDev
@@ -299,13 +309,13 @@ class Login extends React.Component {
     }
   }
 
-  handleLedgerLogin () {
+  handleLedgerLogin() {
     const { file } = this.state;
     // TODO: setup ledger guard here and pass to login:
     const guard = new romeo.guard.LedgerGuard();
 
     this.setState(
-      { loading: true },
+      { loading: true }
       // TODO: uncomment once ledger guard is ready:
       // () => login(guard, file)
     );
@@ -328,7 +338,7 @@ class Login extends React.Component {
       }
     };
 
-    reader.readAsText(files[0], "utf-8");
+    reader.readAsText(files[0], 'utf-8');
   }
 }
 

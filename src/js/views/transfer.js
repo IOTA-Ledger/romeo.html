@@ -1,6 +1,6 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Route, Switch } from "react-router";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Route, Switch } from 'react-router';
 import {
   Grid,
   Message,
@@ -15,23 +15,23 @@ import {
   Responsive,
   Checkbox,
   Popup
-} from "semantic-ui-react";
-import romeo from "@semkodev/romeo.lib";
-import Nav from "../components/nav";
-import { get, showInfo } from "../romeo";
-import { searchSpentAddressThunk } from "../reducers/ui";
-import { formatIOTAAmount } from "../utils";
-import deepHoc from "../components/deep-hoc";
-import TransferRow from "../components/transfer-row";
+} from 'semantic-ui-react';
+import romeo from '@semkodev/romeo.lib';
+import Nav from '../components/nav';
+import { get, showInfo } from '../romeo';
+import { searchSpentAddressThunk } from '../reducers/ui';
+import { formatIOTAAmount } from '../utils';
+import deepHoc from '../components/deep-hoc';
+import TransferRow from '../components/transfer-row';
 
-import classes from "./transfer.css";
+import classes from './transfer.css';
 
 const UNITS = [
-  { key: "i", text: "i", value: 1 },
-  { key: "k", text: "Ki", value: 1000 },
-  { key: "m", text: "Mi", value: 1000000 },
-  { key: "g", text: "Gi", value: 1000000000 },
-  { key: "t", text: "Ti", value: 1000000000000 }
+  { key: 'i', text: 'i', value: 1 },
+  { key: 'k', text: 'Ki', value: 1000 },
+  { key: 'm', text: 'Mi', value: 1000000 },
+  { key: 'g', text: 'Gi', value: 1000000000 },
+  { key: 't', text: 'Ti', value: 1000000000000 }
 ];
 
 const MAX_TXS = 5;
@@ -48,8 +48,8 @@ class Transfer extends React.Component {
       sending: false,
       transfers: [
         {
-          address: (location && location.state && location.state.address) || "",
-          tag: (location && location.state && location.state.tag) || "",
+          address: (location && location.state && location.state.address) || '',
+          tag: (location && location.state && location.state.tag) || '',
           value: (location && location.state && location.state.value) || 0,
           valid: false,
           identifier: romeo.utils.createIdentifier()
@@ -57,7 +57,7 @@ class Transfer extends React.Component {
       ],
       donation: {
         address: this.props.donationAddress,
-        tag: "999DEVIOTAROMEODONATION999",
+        tag: '999DEVIOTAROMEODONATION999',
         value: 0,
         valid: true,
         identifier: romeo.utils.createIdentifier()
@@ -169,7 +169,8 @@ class Transfer extends React.Component {
 
   renderStep0() {
     const { transfers } = this.state;
-    const canAddTransfer = transfers.length < this.romeo.guard.getMaxOutputs() - 1;
+    const canAddTransfer =
+      transfers.length < this.romeo.guard.getMaxOutputs() - 1;
     const addButton = canAddTransfer ? (
       <Grid.Row>
         <Grid.Column mobile={12} computer={4} tablet={6}>
@@ -211,12 +212,11 @@ class Transfer extends React.Component {
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
     const hasEnoughInputs = this.hasEnoughInputs();
     const hasSufficientInputs = this.hasSufficientFunds();
-    const message = hasSufficientInputs && !hasEnoughInputs
-      ? this.renderTooManyInputs1()
-      : null;
-    let content = totalValue < 1
-      ? this.renderNoInput1()
-      : this.renderInput1();
+    const message =
+      hasSufficientInputs && !hasEnoughInputs
+        ? this.renderTooManyInputs1()
+        : null;
+    let content = totalValue < 1 ? this.renderNoInput1() : this.renderInput1();
 
     return (
       <Grid>
@@ -228,7 +228,10 @@ class Transfer extends React.Component {
             <Button
               color="olive"
               size="large"
-              disabled={((forceInput || !autoInput) && !hasEnoughInputs) || !hasSufficientInputs}
+              disabled={
+                ((forceInput || !autoInput) && !hasEnoughInputs) ||
+                !hasSufficientInputs
+              }
               onClick={() =>
                 this.setState({
                   currentStep: 2,
@@ -260,7 +263,7 @@ class Transfer extends React.Component {
           <Table.Cell className="dont-break-out">
             <Label>
               <Icon name="tag" />
-              {donation.tag.padEnd(27, "9")}
+              {donation.tag.padEnd(27, '9')}
             </Label>
           </Table.Cell>
           <Table.Cell textAlign="right">
@@ -298,7 +301,7 @@ class Transfer extends React.Component {
                     <Table.Cell className="dont-break-out">
                       <Label>
                         <Icon name="tag" />
-                        {t.tag.padEnd(27, "9")}
+                        {t.tag.padEnd(27, '9')}
                       </Label>
                     </Table.Cell>
                     <Table.Cell textAlign="right">
@@ -365,7 +368,7 @@ class Transfer extends React.Component {
         </Grid.Row>
         <TransferRow
           disableAddress
-          onChange={value => this.handleChange0("donation", value)}
+          onChange={value => this.handleChange0('donation', value)}
           identifier={donation.identifier}
           address={donation.address}
           tag={donation.tag}
@@ -386,8 +389,8 @@ class Transfer extends React.Component {
     const { transfers } = this.state;
     const newTransfers = transfers.slice();
     newTransfers.splice(transfers.length, 0, {
-      address: "",
-      tag: "",
+      address: '',
+      tag: '',
       value: 0,
       valid: false,
       identifier: romeo.utils.createIdentifier()
@@ -395,21 +398,26 @@ class Transfer extends React.Component {
     this.setState({ transfers: newTransfers });
   }
 
-  hasEnoughInputs () {
+  hasEnoughInputs() {
     const { transfers, donation, inputs } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
     const unspentInputs = inputs.filter(i => !i.spent);
-    return unspentInputs
-      .sort((a, b) => b.balance - a.balance).slice(0, this.romeo.guard.getMaxInputs())
-      .reduce((t, i) => t + i.balance, 0) >= totalValue;
+    return (
+      unspentInputs
+        .sort((a, b) => b.balance - a.balance)
+        .slice(0, this.romeo.guard.getMaxInputs())
+        .reduce((t, i) => t + i.balance, 0) >= totalValue
+    );
   }
 
-  hasSufficientFunds () {
+  hasSufficientFunds() {
     const { transfers, donation, inputs, autoInput } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
-    const unspentInputs = inputs.filter(i => !i.spent && (autoInput || i.selected));
+    const unspentInputs = inputs.filter(
+      i => !i.spent && (autoInput || i.selected)
+    );
     return unspentInputs.reduce((t, i) => t + i.balance, 0) >= totalValue;
   }
 
@@ -420,7 +428,7 @@ class Transfer extends React.Component {
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
     const formattedValue = formatIOTAAmount(totalValue).short;
     const enoughBalance = totalValue <= pageBalance;
-    const color = totalValue >= 0 && enoughBalance ? "green" : "red";
+    const color = totalValue >= 0 && enoughBalance ? 'green' : 'red';
     const nextStep = totalValue > 0 ? 1 : 2;
 
     const canProceed = enoughBalance && this.canGoToStep1();
@@ -438,7 +446,8 @@ class Transfer extends React.Component {
                 this.setState({
                   currentStep: nextStep,
                   maxStep: nextStep,
-                  forceInput: !this.hasSufficientFunds() || !this.hasEnoughInputs()
+                  forceInput:
+                    !this.hasSufficientFunds() || !this.hasEnoughInputs()
                 })
               }
             >
@@ -456,7 +465,7 @@ class Transfer extends React.Component {
               <Header.Content>
                 {formattedValue}
                 <Header.Subheader>
-                  {!enoughBalance && "Not enough balance!"}
+                  {!enoughBalance && 'Not enough balance!'}
                 </Header.Subheader>
               </Header.Content>
             </Header>
@@ -596,7 +605,7 @@ class Transfer extends React.Component {
               <Header
                 as="h2"
                 textAlign="right"
-                color={outstanding ? "red" : "green"}
+                color={outstanding ? 'red' : 'green'}
               >
                 <Header.Content>
                   {formatIOTAAmount(outstanding).short}
@@ -640,9 +649,11 @@ class Transfer extends React.Component {
             header={`Your login method only support a maximum of ${this.romeo.guard.getMaxInputs()} input addresses!`}
             content={
               <span>
-                You would need more inputs to make this transaction, which is currently not supported by your login
-                method. As a workaround, you can try transferring all the needed funds from your smaller addresses
-                to a single one and making the transfer from that address afterwards.
+                You would need more inputs to make this transaction, which is
+                currently not supported by your login method. As a workaround,
+                you can try transferring all the needed funds from your smaller
+                addresses to a single one and making the transfer from that
+                address afterwards.
               </span>
             }
           />
@@ -657,7 +668,7 @@ class Transfer extends React.Component {
   }
 
   handleChange0(pos, value) {
-    if (pos === "donation") {
+    if (pos === 'donation') {
       this.setState({ donation: value });
       return;
     }
@@ -726,10 +737,10 @@ class Transfer extends React.Component {
         showInfo(
           <span>
             <Icon name="close" />&nbsp;
-            {(error && error.message) || "Failed sending the transfers!"}
+            {(error && error.message) || 'Failed sending the transfers!'}
           </span>,
           3000,
-          "error"
+          'error'
         );
       });
   }
