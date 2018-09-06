@@ -27,7 +27,7 @@ class CurrentPageMenuItem extends React.Component {
     const { isSyncing, index } = page.page;
     const pageObject = romeo.pages.getByIndex(index).page;
     const sync = () => {
-      !isSyncing && romeo.pages.syncPage(pageObject, true, 40);
+      !isSyncing && syncPage(pageObject, true, 40);
     };
     const balance = pageObject.getBalance();
     const currentAddress = pageObject.getCurrentAddress();
@@ -179,6 +179,19 @@ class CurrentPageMenuItem extends React.Component {
       </Menu.Menu>
     );
   }
+}
+
+export function syncPage(page, force, priority) {
+  return page.sync(force, priority).catch(error => {
+    showInfo(
+      <span>
+        <Icon name="close" />&nbsp;
+        {(error && error.message) || 'Failed syncing page!'}
+      </span>,
+      20000,
+      'error'
+    );
+  });
 }
 
 export function copyData(data, message = 'Copied!', icon = 'check') {
