@@ -3,6 +3,8 @@ import romeo from '@semkodev/romeo.lib';
 import { connect } from 'react-redux';
 import ReactFileReader from 'react-file-reader';
 import { Redirect } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { showInfo } from '../romeo';
 import {
   Container,
   Grid,
@@ -60,6 +62,7 @@ class Login extends React.Component {
 
     return (
       <div className="loginPage">
+        <ToastContainer autoClose={3000} />
         <Container className="loginContainer">
           <Transition transitionOnMount animation="fade up">
             <Grid divided>
@@ -309,16 +312,25 @@ class Login extends React.Component {
     }
   }
 
-  handleLedgerLogin() {
+  async handleLedgerLogin() {
     const { file } = this.state;
-    // TODO: setup ledger guard here and pass to login:
-    const guard = new romeo.guard.LedgerGuard();
+    this.setState({ loading: true });
 
-    this.setState(
-      { loading: true }
-      // TODO: uncomment once ledger guard is ready:
-      // () => login(guard, file)
-    );
+    try {
+      const guard = await romeo.guard.LedgerGuard.build({ debug: true });
+      await this.props.login(guard, file);
+    } catch (error) {
+      this.setState({ loading: false });
+      showInfo(
+        <span>
+          <Icon name="close" />&nbsp;
+          {(error && error.message) || 'Failed initializing LedgerGuard!'}
+        </span>,
+        5000,
+        'error'
+      );
+      console.error('LedgerGuard.build error', error);
+    }
   }
 
   handleFiles(files) {
