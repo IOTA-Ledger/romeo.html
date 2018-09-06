@@ -29,6 +29,9 @@ import NewPage from './new-page';
 const ADDRESS =
   'YHZIJOENEFSDMZGZA9WOGFTRXOFPVFFCDEYEFHPUGKEUAOTTMVLPSSNZNHRJD99WAVESLFPSGLMTUEIBDZRKBKXWZD';
 
+const IOTA_LEDGER_ADDRESS =
+  'ADLJXS9SKYQKMVQFXR9JDUUJHJWGDNWHQZMDGJFGZOX9BZEKDSXBSPZTTWEYPTNM9OZMYDQWZXFHRTXRCOITXAGCJZ';
+
 import classes from './home.css';
 
 class Home extends React.Component {
@@ -323,7 +326,19 @@ class Home extends React.Component {
             })
           }
         >
-          Donate
+          Donate to SemkoDev
+        </Responsive>
+        <Responsive
+          as={Menu.Item}
+          minWidth={660}
+          onClick={() =>
+            this.props.history.push({
+              pathname: `${linkToCurrentPage()}/transfer`,
+              state: { address: IOTA_LEDGER_ADDRESS }
+            })
+          }
+        >
+          Donate to IOTA Ledger Team
         </Responsive>
         <Menu.Menu position="right">
           <Popup
