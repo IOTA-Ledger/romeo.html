@@ -1,9 +1,9 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Segment, Icon, Header, Dimmer } from "semantic-ui-react";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Segment, Icon, Header, Dimmer } from 'semantic-ui-react';
 
 function LoadingView({ jobs, isOnline, provider }) {
-  let info = "";
+  let info = '';
   const jobQueued = jobs.find(job => !job.isStarted && !job.isFinished);
   const jobRunning = jobs.find(job => job.isStarted && !job.isFinished);
   const pendingJob = jobRunning || jobQueued;
@@ -19,14 +19,14 @@ function LoadingView({ jobs, isOnline, provider }) {
   } else if (jobFailed) {
     info = `FAILED: ${jobFailed.opts.description}`;
   } else if (pendingJob) {
-    info = "Syncing pages";
+    info = 'Syncing pages';
   } else if (jobFinished) {
-    info = "Starting Ultra-Light Ledger...";
+    info = 'Starting Ultra-Light Ledger...';
   }
   return (
     <Dimmer.Dimmable as={Segment} dimmed>
-      <div style={{ height: "100%" }}>&nbsp;</div>
-      <Dimmer active style={{ paddingTop: "10%" }}>
+      <div style={{ height: '100%' }}>&nbsp;</div>
+      <Dimmer active style={{ paddingTop: '10%' }}>
         <Header as="h2" icon inverted>
           <Icon name="spinner" loading />
           <Header.Content>

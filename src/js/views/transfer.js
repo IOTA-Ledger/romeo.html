@@ -1,6 +1,6 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Route, Switch } from "react-router";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Route, Switch } from 'react-router';
 import {
   Grid,
   Message,
@@ -15,23 +15,23 @@ import {
   Responsive,
   Checkbox,
   Popup
-} from "semantic-ui-react";
-import romeo from "@semkodev/romeo.lib";
-import Nav from "../components/nav";
-import { get, showInfo } from "../romeo";
-import { searchSpentAddressThunk } from "../reducers/ui";
-import { formatIOTAAmount } from "../utils";
-import deepHoc from "../components/deep-hoc";
-import TransferRow from "../components/transfer-row";
+} from 'semantic-ui-react';
+import romeo from '@semkodev/romeo.lib';
+import Nav from '../components/nav';
+import { get, showInfo } from '../romeo';
+import { searchSpentAddressThunk } from '../reducers/ui';
+import { formatIOTAAmount } from '../utils';
+import deepHoc from '../components/deep-hoc';
+import TransferRow from '../components/transfer-row';
 
-import classes from "./transfer.css";
+import classes from './transfer.css';
 
 const UNITS = [
-  { key: "i", text: "i", value: 1 },
-  { key: "k", text: "Ki", value: 1000 },
-  { key: "m", text: "Mi", value: 1000000 },
-  { key: "g", text: "Gi", value: 1000000000 },
-  { key: "t", text: "Ti", value: 1000000000000 }
+  { key: 'i', text: 'i', value: 1 },
+  { key: 'k', text: 'Ki', value: 1000 },
+  { key: 'm', text: 'Mi', value: 1000000 },
+  { key: 'g', text: 'Gi', value: 1000000000 },
+  { key: 't', text: 'Ti', value: 1000000000000 }
 ];
 
 const MAX_TXS = 5;
@@ -48,8 +48,8 @@ class Transfer extends React.Component {
       sending: false,
       transfers: [
         {
-          address: (location && location.state && location.state.address) || "",
-          tag: (location && location.state && location.state.tag) || "",
+          address: (location && location.state && location.state.address) || '',
+          tag: (location && location.state && location.state.tag) || '',
           value: (location && location.state && location.state.value) || 0,
           valid: false,
           identifier: romeo.utils.createIdentifier()
@@ -57,7 +57,7 @@ class Transfer extends React.Component {
       ],
       donation: {
         address: this.props.donationAddress,
-        tag: "999DEVIOTAROMEODONATION999",
+        tag: '999DEVIOTAROMEODONATION999',
         value: 0,
         valid: true,
         identifier: romeo.utils.createIdentifier()
@@ -169,7 +169,8 @@ class Transfer extends React.Component {
 
   renderStep0() {
     const { transfers } = this.state;
-    const canAddTransfer = transfers.length < MAX_TXS;
+    const canAddTransfer =
+      transfers.length < this.romeo.guard.getMaxOutputs() - 1;
     const addButton = canAddTransfer ? (
       <Grid.Row>
         <Grid.Column mobile={12} computer={4} tablet={6}>
@@ -206,13 +207,20 @@ class Transfer extends React.Component {
   }
 
   renderStep1() {
-    const { transfers, donation } = this.state;
+    const { transfers, donation, forceInput, autoInput } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
+    const hasEnoughInputs = this.hasEnoughInputs();
+    const hasSufficientInputs = this.hasSufficientFunds();
+    const message =
+      hasSufficientInputs && !hasEnoughInputs
+        ? this.renderTooManyInputs1()
+        : null;
     let content = totalValue < 1 ? this.renderNoInput1() : this.renderInput1();
 
     return (
       <Grid>
+        {message}
         {content}
         <Grid.Row>
           <Grid.Column computer={12} tablet={16} mobile={16} textAlign="right">
@@ -220,6 +228,10 @@ class Transfer extends React.Component {
             <Button
               color="olive"
               size="large"
+              disabled={
+                ((forceInput || !autoInput) && !hasEnoughInputs) ||
+                !hasSufficientInputs
+              }
               onClick={() =>
                 this.setState({
                   currentStep: 2,
@@ -239,6 +251,7 @@ class Transfer extends React.Component {
     const { transfers, donation } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
+    const usingSpentInputs = this.getSpentInputs().length;
     const donationRow =
       donation.value > 0 ? (
         <Table.Row positive>
@@ -251,7 +264,7 @@ class Transfer extends React.Component {
           <Table.Cell className="dont-break-out">
             <Label>
               <Icon name="tag" />
-              {donation.tag.padEnd(27, "9")}
+              {donation.tag.padEnd(27, '9')}
             </Label>
           </Table.Cell>
           <Table.Cell textAlign="right">
@@ -267,6 +280,13 @@ class Transfer extends React.Component {
           </Table.Cell>
         </Table.Row>
       ) : null;
+    const spentWarning = usingSpentInputs ? (
+      <Header as="h3" textAlign="center" color="red">
+        WARNING: You are sending from an already spent address.
+        <br />This will decrease the security of this address significantly.
+        <br />Ensure you do not receive funds to this address again!
+      </Header>
+    ) : null;
 
     return (
       <Grid>
@@ -289,7 +309,7 @@ class Transfer extends React.Component {
                     <Table.Cell className="dont-break-out">
                       <Label>
                         <Icon name="tag" />
-                        {t.tag.padEnd(27, "9")}
+                        {t.tag.padEnd(27, '9')}
                       </Label>
                     </Table.Cell>
                     <Table.Cell textAlign="right">
@@ -329,6 +349,7 @@ class Transfer extends React.Component {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column computer={12} tablet={16} mobile={16} textAlign="right">
+            {spentWarning}
             <Divider />
             <Button color="olive" size="large" onClick={this.sendTransfer}>
               <Icon name="send" /> &nbsp; Send transfer(s)
@@ -356,7 +377,7 @@ class Transfer extends React.Component {
         </Grid.Row>
         <TransferRow
           disableAddress
-          onChange={value => this.handleChange0("donation", value)}
+          onChange={value => this.handleChange0('donation', value)}
           identifier={donation.identifier}
           address={donation.address}
           tag={donation.tag}
@@ -377,8 +398,8 @@ class Transfer extends React.Component {
     const { transfers } = this.state;
     const newTransfers = transfers.slice();
     newTransfers.splice(transfers.length, 0, {
-      address: "",
-      tag: "",
+      address: '',
+      tag: '',
       value: 0,
       valid: false,
       identifier: romeo.utils.createIdentifier()
@@ -386,18 +407,59 @@ class Transfer extends React.Component {
     this.setState({ transfers: newTransfers });
   }
 
+  getSpentInputs() {
+    const { inputs } = this.state;
+    return inputs.filter(i => i.spent && i.selected);
+  }
+
+  inputNotTransfer(input) {
+    const { transfers } = this.state;
+
+    for (const k in transfers) {
+      if (
+        transfers[k].address.substring(0, 81) == input.address.substring(0, 81)
+      )
+        return false;
+    }
+
+    return true;
+  }
+
+  hasEnoughInputs() {
+    const { transfers, donation, inputs } = this.state;
+    const totalValue =
+      donation.value + transfers.reduce((s, t) => s + t.value, 0);
+    const validInputs = inputs.filter(
+      i => (!i.spent || i.selected) && this.inputNotTransfer(i)
+    );
+    return (
+      validInputs
+        .sort((a, b) => b.balance - a.balance)
+        .slice(0, this.romeo.guard.getMaxInputs())
+        .reduce((t, i) => t + i.balance, 0) >= totalValue
+    );
+  }
+
+  hasSufficientFunds() {
+    const { transfers, donation, inputs, autoInput } = this.state;
+    const totalValue =
+      donation.value + transfers.reduce((s, t) => s + t.value, 0);
+    const validInputs = inputs.filter(
+      i => ((autoInput && !i.spent) || i.selected) && this.inputNotTransfer(i)
+    );
+
+    return validInputs.reduce((t, i) => t + i.balance, 0) >= totalValue;
+  }
+
   renderTotalStep0() {
     const { page: { page: { balance: pageBalance } } } = this.props;
-    const { transfers, donation, inputs } = this.state;
+    const { transfers, donation } = this.state;
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
     const formattedValue = formatIOTAAmount(totalValue).short;
     const enoughBalance = totalValue <= pageBalance;
-    const color = totalValue >= 0 && enoughBalance ? "green" : "red";
+    const color = totalValue >= 0 && enoughBalance ? 'green' : 'red';
     const nextStep = totalValue > 0 ? 1 : 2;
-    const sufficient =
-      inputs.filter(i => !i.spent).reduce((t, i) => t + i.balance, 0) >=
-      totalValue;
 
     const canProceed = enoughBalance && this.canGoToStep1();
 
@@ -414,7 +476,8 @@ class Transfer extends React.Component {
                 this.setState({
                   currentStep: nextStep,
                   maxStep: nextStep,
-                  forceInput: !sufficient
+                  forceInput:
+                    !this.hasSufficientFunds() || !this.hasEnoughInputs()
                 })
               }
             >
@@ -432,7 +495,7 @@ class Transfer extends React.Component {
               <Header.Content>
                 {formattedValue}
                 <Header.Subheader>
-                  {!enoughBalance && "Not enough balance!"}
+                  {!enoughBalance && 'Not enough balance!'}
                 </Header.Subheader>
               </Header.Content>
             </Header>
@@ -470,7 +533,7 @@ class Transfer extends React.Component {
             disabled={forceInput}
             onChange={() => this.setState({ autoInput: !autoInput })}
             label="Automatic source selection"
-            checked={autoInput || forceInput}
+            checked={autoInput && !forceInput}
           />
         </Grid.Column>
       </Grid.Row>,
@@ -490,6 +553,7 @@ class Transfer extends React.Component {
       .filter(i => i.selected)
       .reduce((t, i) => t + i.balance, 0);
     const outstanding = Math.max(0, totalValue - selectedValue);
+    const invalidInput = inputs.filter(i => !this.inputNotTransfer(i));
 
     return (
       <Table compact celled definition>
@@ -510,12 +574,13 @@ class Transfer extends React.Component {
               <Table.Cell>
                 <Checkbox
                   toggle
+                  disabled={invalidInput.includes(i)}
                   onChange={() => this.handleChange1(x)}
                   checked={i.selected}
                 />
               </Table.Cell>
               <Table.Cell className="dont-break-out">
-                {!i.spent ? (
+                {!i.spent && !invalidInput.includes(i) ? (
                   <Icon name="check" color="green" />
                 ) : (
                   <Icon name="close" color="red" />
@@ -525,6 +590,12 @@ class Transfer extends React.Component {
                     trigger={<span>{i.address}</span>}
                     position="top left"
                     content="This address is marked as spent. If possible, do not use!"
+                  />
+                ) : invalidInput.includes(i) ? (
+                  <Popup
+                    trigger={<span>{i.address}</span>}
+                    position="top left"
+                    content="Can't use transfer address as input!"
                   />
                 ) : (
                   i.address
@@ -572,7 +643,7 @@ class Transfer extends React.Component {
               <Header
                 as="h2"
                 textAlign="right"
-                color={outstanding ? "red" : "green"}
+                color={outstanding ? 'red' : 'green'}
               >
                 <Header.Content>
                   {formatIOTAAmount(outstanding).short}
@@ -606,13 +677,36 @@ class Transfer extends React.Component {
     );
   }
 
+  renderTooManyInputs1() {
+    return (
+      <Grid.Row>
+        <Grid.Column computer={12} tablet={16} mobile={16}>
+          <Message
+            error
+            icon="at"
+            header={`Your login method only support a maximum of ${this.romeo.guard.getMaxInputs()} input addresses!`}
+            content={
+              <span>
+                You would need more inputs to make this transaction, which is
+                currently not supported by your login method. As a workaround,
+                you can try transferring all the needed funds from your smaller
+                addresses to a single one and making the transfer from that
+                address afterwards.
+              </span>
+            }
+          />
+        </Grid.Column>
+      </Grid.Row>
+    );
+  }
+
   canGoToStep1() {
     const { donation, transfers } = this.state;
     return !transfers.find(t => !t.valid) && donation.valid;
   }
 
   handleChange0(pos, value) {
-    if (pos === "donation") {
+    if (pos === 'donation') {
       this.setState({ donation: value });
       return;
     }
@@ -631,9 +725,10 @@ class Transfer extends React.Component {
     this.setState({ inputs: newInputs });
   }
 
-  sendTransfer() {
+  async sendTransfer() {
     const { history } = this.props;
     const { donation, transfers, autoInput, forceInput, inputs } = this.state;
+    transfers.forEach(t => (t.tag = t.tag ? t.tag : ''));
     const totalValue =
       donation.value + transfers.reduce((s, t) => s + t.value, 0);
     const txs = transfers.slice();
@@ -646,47 +741,50 @@ class Transfer extends React.Component {
     if (autoInput && !forceInput) {
       txInputs = [];
       let inputValue = 0;
-      const unspent = inputs.filter(i => !i.spent);
-      const spent = inputs.filter(i => i.spent);
-      for (let x = 0; x < unspent.length; x++) {
-        txInputs.push(unspent[x]);
-        inputValue += unspent[x].balance;
+      const validUnspent = inputs.filter(
+        i => !i.spent && this.inputNotTransfer(i)
+      );
+      const validSpent = inputs.filter(
+        i => i.spent && this.inputNotTransfer(i)
+      );
+      for (let x = 0; x < validUnspent.length; x++) {
+        txInputs.push(validUnspent[x]);
+        inputValue += validUnspent[x].balance;
         if (inputValue >= totalValue) break;
       }
       if (inputValue < totalValue) {
-        for (let x = 0; x < spent.length; x++) {
-          txInputs.push(spent[x]);
-          inputValue += spent[x].balance;
+        for (let x = 0; x < validSpent.length; x++) {
+          txInputs.push(validSpent[x]);
+          inputValue += validSpent[x].balance;
           if (inputValue >= totalValue) break;
         }
       }
     }
 
-    this.setState({ sending: true });
-    this.pageObject
-      .sendTransfers(txs, txInputs, null, null, 7000)
-      .then(() => {
-        this.setState({ sending: false });
-        history.push(`/page/${this.pageObject.opts.index + 1}`);
-        showInfo(
-          <span>
-            <Icon name="send" /> Transfer sent!
-          </span>
-        );
-        this.pageObject.sync(true, 7000);
-      })
-      .catch(error => {
-        this.setState({ sending: false });
-        history.push(`/page/${this.pageObject.opts.index + 1}`);
-        showInfo(
-          <span>
-            <Icon name="close" />&nbsp;
-            {(error && error.message) || "Failed sending the transfers!"}
-          </span>,
-          3000,
-          "error"
-        );
-      });
+    try {
+      this.setState({ sending: true });
+      await this.pageObject.sendTransfers(txs, txInputs, null, null, 7000);
+      this.setState({ sending: false });
+      history.push(`/page/${this.pageObject.opts.index + 1}`);
+      showInfo(
+        <span>
+          <Icon name="send" /> Transfer sent!
+        </span>
+      );
+      // sync after transaction completed
+      await this.pageObject.sync(true, 7000);
+    } catch (error) {
+      this.setState({ sending: false });
+      history.push(`/page/${this.pageObject.opts.index + 1}`);
+      showInfo(
+        <span>
+          <Icon name="close" />&nbsp;
+          {(error && error.message) || 'Failed sending the transfers!'}
+        </span>,
+        5000,
+        'error'
+      );
+    }
   }
 }
 

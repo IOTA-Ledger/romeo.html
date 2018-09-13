@@ -14,6 +14,7 @@ class CurrentPageMenuItem extends React.Component {
     const { pages, match: { params }, onClick, history, mobile } = this.props;
     const currentIndex = parseInt((params && params.page) || 0) - 1;
     const romeo = get();
+    const checksum = romeo.guard.getChecksum();
 
     if (currentIndex < 0 || isNaN(currentIndex)) {
       return null;
@@ -26,7 +27,7 @@ class CurrentPageMenuItem extends React.Component {
     const { isSyncing, index } = page.page;
     const pageObject = romeo.pages.getByIndex(index).page;
     const sync = () => {
-      !isSyncing && romeo.pages.syncPage(pageObject, true, 40);
+      !isSyncing && syncPage(pageObject, true, 40);
     };
     const balance = pageObject.getBalance();
     const currentAddress = pageObject.getCurrentAddress();
@@ -80,7 +81,7 @@ class CurrentPageMenuItem extends React.Component {
         )}
       </Menu.Item>
     );
-    const seedItem = (
+    const seedItem = checksum && (
       <Menu.Item
         key="seed"
         onClick={() =>
@@ -92,6 +93,20 @@ class CurrentPageMenuItem extends React.Component {
         <Icon name="key" color="grey" size="big" />
         {mobile ? 'Copy page seed' : ''}
       </Menu.Item>
+    );
+    const seedMenuItem = checksum && (
+      <Responsive
+        as={Popup}
+        minWidth={665}
+        position="bottom center"
+        trigger={seedItem}
+        content={
+          <span>
+            Copy page seed to clipboard. <br />
+            <strong>Keep your seeds SAFE and NEVER share them!</strong>
+          </span>
+        }
+      />
     );
     const transferItem = (
       <Menu.Item
@@ -148,18 +163,7 @@ class CurrentPageMenuItem extends React.Component {
           trigger={balanceItem}
           content="Current page balance. Click to copy."
         />
-        <Responsive
-          as={Popup}
-          minWidth={665}
-          position="bottom center"
-          trigger={seedItem}
-          content={
-            <span>
-              Copy page seed to clipboard. <br />
-              <strong>Keep your seeds SAFE and NEVER share them!</strong>
-            </span>
-          }
-        />
+        {seedMenuItem}
         {addressButton}
         <Responsive
           as={Popup}
@@ -175,6 +179,19 @@ class CurrentPageMenuItem extends React.Component {
       </Menu.Menu>
     );
   }
+}
+
+export function syncPage(page, force, priority) {
+  return page.sync(force, priority).catch(error => {
+    showInfo(
+      <span>
+        <Icon name="close" />&nbsp;
+        {(error && error.message) || 'Failed syncing page!'}
+      </span>,
+      20000,
+      'error'
+    );
+  });
 }
 
 export function copyData(data, message = 'Copied!', icon = 'check') {

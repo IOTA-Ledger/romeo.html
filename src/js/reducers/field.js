@@ -1,10 +1,10 @@
 export const updateField = update => ({
-  type: "UPDATE_FIELD",
+  type: 'UPDATE_FIELD',
   payload: update
 });
 
 export const getSeason = () => dispatch =>
-  fetch("https://field.deviota.com/api/v1/seasons")
+  fetch('https://field.deviota.com/api/v1/seasons')
     .then(response => {
       return response.json();
     })
@@ -16,7 +16,7 @@ export const getSeason = () => dispatch =>
 
 const fieldReducer = (state = null, action) => {
   switch (action.type) {
-    case "UPDATE_FIELD":
+    case 'UPDATE_FIELD':
       return Object.assign({}, state, action.payload);
     default:
       return state;
