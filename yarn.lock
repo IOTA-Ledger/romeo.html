@@ -15,9 +15,9 @@
   dependencies:
     events "^2.0.0"
 
-"@semkodev/romeo.lib@0.2.0y":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@semkodev/romeo.lib/-/romeo.lib-0.2.0.tgz#efdeac20a5f24cda48ddf425883b5936c320128a"
+"@semkodev/romeo.lib@0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@semkodev/romeo.lib/-/romeo.lib-0.2.1.tgz#e73d71ef3fc743d411dc83ce8f5deb4fb18cd3c3"
   dependencies:
     "@ledgerhq/hw-transport-u2f" "^4.21.0"
     async "^2.6.0"
