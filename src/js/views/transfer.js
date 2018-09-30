@@ -225,6 +225,7 @@ class Transfer extends React.Component {
         <Grid.Row>
           <Grid.Column computer={12} tablet={16} mobile={16} textAlign="right">
             <Divider />
+            {this.renderCancelButton()}
             <Button
               color="olive"
               size="large"
@@ -288,8 +289,29 @@ class Transfer extends React.Component {
       </Header>
     ) : null;
 
+    const ledgerWarning = this.romeo.guard.opts.name === 'ledger'
+      ? (
+        <Grid.Row>
+          <Grid.Column computer={12} tablet={16} mobile={16}>
+            <Message
+              info
+              icon="usb"
+              header="Ledger detected"
+              content={
+                <span>
+              During the transfer, please take a look at your Ledger: You will
+              have to confirm the transaction before it can be completed!
+            </span>
+              }
+            />
+          </Grid.Column>
+        </Grid.Row>
+      )
+      : null;
+
     return (
       <Grid>
+        {ledgerWarning}
         <Grid.Row>
           <Grid.Column computer={12} tablet={16} mobile={16}>
             <Table striped stackable compact fixed>
@@ -351,6 +373,7 @@ class Transfer extends React.Component {
           <Grid.Column computer={12} tablet={16} mobile={16} textAlign="right">
             {spentWarning}
             <Divider />
+            {this.renderCancelButton()}
             <Button color="olive" size="large" onClick={this.sendTransfer}>
               <Icon name="send" /> &nbsp; Send transfer(s)
             </Button>
@@ -453,6 +476,15 @@ class Transfer extends React.Component {
     return validInputs.reduce((t, i) => t + i.balance, 0) >= totalValue;
   }
 
+  renderCancelButton () {
+    const { history } = this.props;
+    return (
+      <Button size="large" color="red" onClick={() => history.push(`/page/${this.pageObject.opts.index + 1}`)}>
+        Cancel
+      </Button>
+    )
+  }
+
   renderTotalStep0() {
     const { page: { page: { balance: pageBalance } } } = this.props;
     const { transfers, donation } = this.state;
@@ -470,6 +502,7 @@ class Transfer extends React.Component {
         <Grid.Row>
           <Grid.Column width={12} textAlign="right">
             <Divider />
+            {this.renderCancelButton()}
             <Button
               disabled={!canProceed}
               color="olive"

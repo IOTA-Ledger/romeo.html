@@ -11,16 +11,29 @@ top of it offered by Romeo.
 ## How to use
 
 Please check the Articles on [Deviota Medium](https://medium.com/deviota) for instructions.
-Download the latest release from the releases tab.
+Romeo is bundled within a single page and it runs anywhere on most browsers. However,
+if you intend to use ledger, the file has to be running on a HTTPS server, either locally or
+hosted somewhere.
 
-**BEFORE RUNNING**: Check that the file has not been tampered with.
-**It's MD5 Signature should match** the one given in the release information!
+Each release is automatically built and hosted here:
 
-You can use command-line tools on your OS or upload the file at [OnlineMD5](http://onlinemd5.com/)
+https://semkodev.gitlab.io/romeo.html
+
+You can access Romeo from that link. In order to download a local copy of romeo, simply
+select "save as" in your browser and save the page anywhere on your computer.
 
 **NOTE**: Safari is currently NOT supported!
 
-**NOTE**: latest released version is available as statically hosted page here at GitLab: https://semkodev.gitlab.io/romeo.html/
+## How to run locally with HTTPS (for Ledger)
+
+You will nodeJS and yarn installed on your computer. Using the command line, execute the
+following command to start a local server:
+
+```
+yarn run
+```
+
+Afterwards access Romeo at https://localhost:1234
 
 ## How to compile locally
 
@@ -51,7 +64,7 @@ This software is experimental. Use at your own risk!
 **Donations always welcome**:
 
 ```
-AAJXXFJUEQHKPYIOUIUO9FWCMOAFBZAZPXIFRI9FLDQZJGHQENG9HNMODUZJCHR9RHHUSBHWJELGRDOWZRNWYLYCQW
+IYUIUCFNGOEEQHT9CQU9VYJVOJMQI9VYTQGQLTBAKTFIPWWRBFEV9TJWUZU9EYEFPM9VB9QYXTSMCDKMDABASVXPPX
 ```
 
 ## Authors
