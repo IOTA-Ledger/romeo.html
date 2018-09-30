@@ -361,9 +361,11 @@ class Transfer extends React.Component {
   }
 
   renderDonation() {
-    const { donation } = this.state;
+    const { donation, transfers } = this.state;
+    const canAddTransfer =
+      transfers.length < this.romeo.guard.getMaxOutputs() - 1;
 
-    if (!donation.address || !donation.address.length) return null;
+    if (!donation.address || !donation.address.length || !canAddTransfer) return null;
 
     return (
       <Grid>
@@ -763,7 +765,9 @@ class Transfer extends React.Component {
 
     try {
       this.setState({ sending: true });
-      await this.pageObject.sendTransfers(txs, txInputs, null, null, 7000);
+      await this.pageObject.sendTransfers(
+        txs, txInputs, null, null, 7000,
+        this.romeo.guard.opts.name === 'ledger');
       this.setState({ sending: false });
       history.push(`/page/${this.pageObject.opts.index + 1}`);
       showInfo(

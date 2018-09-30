@@ -18,10 +18,22 @@ class NewPage extends React.Component {
       adding: false
     };
     this.addPage = this.addPage.bind(this);
+    this.romeo = get();
   }
 
   render() {
     const { adding } = this.state;
+    const extraInfo = this.romeo.guard.opts.name === 'ledger'
+       ? (
+         <strong>
+           <br/><br/>
+           Since you are using ledger, the transfers from the old page will happen sequentially
+           one-by-one. Hence, if you have several addresses with positive balance,
+           you will have to confirm all the transfers from each ledger on your ledger one after another.
+           <br/><br/>
+         </strong>
+      )
+      : null;
     return (
       <span>
         <Grid>
@@ -54,6 +66,7 @@ class NewPage extends React.Component {
                       The old balance should be available to spend on the new
                       page within 5-10 minutes (as soon as the transaction is
                       confirmed).
+                      {extraInfo}
                       <p>Are you ready?</p>
                       <center>
                         <Button
@@ -93,7 +106,7 @@ class NewPage extends React.Component {
       12000,
       'warning'
     );
-    romeo.newPage().then(() => {
+    romeo.newPage({ preventRetries: romeo.guard.opts.name === 'ledger' }).then(() => {
       history.push(linkToCurrentPage());
       showInfo(
         <span>

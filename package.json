@@ -45,7 +45,7 @@
     "react-toastify": "^3.4.3",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "@semkodev/romeo.lib": "0.1.7",
+    "@semkodev/romeo.lib": "0.2.0y",
     "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.79.0"
   }

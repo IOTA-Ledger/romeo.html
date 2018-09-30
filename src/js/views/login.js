@@ -43,7 +43,7 @@ class Login extends React.Component {
 
   componentDidMount() {
     if (this.userInput) {
-      setTimeout(() => this.userInput.focus(), 10);
+      setTimeout(() => this.userInput && this.userInput.focus(), 10);
     }
   }
 

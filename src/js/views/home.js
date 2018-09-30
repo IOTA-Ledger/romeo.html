@@ -312,7 +312,7 @@ class Home extends React.Component {
             style={{ display: 'inline-block' }}
           />{' '}
           at&nbsp;
-          <a href="https://twitter.com/RomanSemko" target="_blank">
+          <a href="https://twitter.com/RomanSemko" target="_blank" style={{ position: 'relative', top: '1.6px', left: '2px'}}>
             SemkoDev
           </a>
         </Responsive>

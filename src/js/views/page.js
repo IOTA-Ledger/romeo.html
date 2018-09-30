@@ -168,6 +168,9 @@ class Page extends React.Component {
           header="Spent positive balance (SPA) address detected!"
           content={
             <span>
+              If you just sent a transfer from this address, that has not been confirmed, yet,
+              you can safely ignore this message. Promoting and reattaching the sent transaction
+              is safe!<br/><br/>
               A positive balance has been detected on an address({
                 page.page.hasSPA.address
               }) that already has been spent from. Reusing old addresses that
