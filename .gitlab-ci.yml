@@ -18,7 +18,7 @@ build:
     - branches
   script:
     - apt-get update
-    - apt-get install npm yarn python g++ make util-linux
+    - apt-get -y install npm yarn python g++ make util-linux
     - yarn install
     # build the package
     - npm run build
