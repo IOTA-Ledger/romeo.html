@@ -17,6 +17,9 @@ class AddressMenu extends React.Component {
     const adding = page.page.jobs.find(
       j => j.opts.type === 'NEW_ADDRESS' && !j.isFinished
     );
+    if (page.page.isSyncing && !adding && addresses.length === 0) {
+      return null;
+    }
     const isCurrent = isCurrentIndex(page.keyIndex);
     const addButton = (
       <Menu.Item onClick={this.addNewAddress} disabled={!!adding && isCurrent}>
