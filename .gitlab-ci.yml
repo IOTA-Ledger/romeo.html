@@ -1,7 +1,4 @@
-image: docker:latest
-
-services:
-  - docker:dind
+image: ubuntu:latest
 
 stages:
   - build
@@ -20,8 +17,8 @@ build:
   except:
     - branches
   script:
-    - apk update
-    - apk add npm yarn python g++ make util-linux
+    - apt-get update
+    - apk-get install npm yarn python g++ make util-linux
     - yarn install
     # build the package
     - npm run build
