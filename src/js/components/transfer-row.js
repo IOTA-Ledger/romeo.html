@@ -2,14 +2,11 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 import {
   Grid,
-  Message,
   Header,
   Icon,
   Popup,
   Form,
-  Divider,
   Button,
-  Segment
 } from 'semantic-ui-react';
 import { get, wasSpent } from '../romeo';
 import { formatIOTAAmount } from '../utils';
@@ -29,7 +26,7 @@ class TransferRow extends React.Component {
     this.state = {
       address: props.address || '',
       value: props.value || 0,
-      unit: props.unit || 1,
+      unit: props.unit || 1000000,
       tag: props.tag || '',
       searchingAddress: '',
       validAddress: false,

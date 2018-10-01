@@ -18,7 +18,7 @@ class PageMenu extends React.Component {
 
     const pageNotification =
       pages.length < 2 ? (
-        <Header as="h4" icon color="grey" style={{ padding: 10 }}>
+        <Header as="h4" icon color="grey" style={{ padding: 10 }} inverted>
           <Icon name="search" />
           No more pages
           <Header.Subheader>
@@ -41,7 +41,7 @@ class PageMenu extends React.Component {
             onClick();
           }}
         >
-          <Header as="h4" textAlign="left" color="green">
+          <Header as="h4" textAlign="left" color="green" inverted>
             <Icon name="asterisk" />
             <Header.Content>
               Add a new page

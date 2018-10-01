@@ -64,6 +64,7 @@ class PageMenuItem extends React.Component {
           as="h4"
           textAlign="left"
           color={isCurrent ? 'purple' : balancedArchived ? 'yellow' : 'grey'}
+          inverted={!topMenu}
         >
           {icon}
           <Header.Content>

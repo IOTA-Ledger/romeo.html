@@ -70,6 +70,7 @@ class Home extends React.Component {
           visible={showMenu}
           icon="labeled"
           vertical
+          inverted
         >
           <Switch>
             <Route path="/page/:page" component={pageMenu} />
@@ -312,7 +313,7 @@ class Home extends React.Component {
             style={{ display: 'inline-block' }}
           />{' '}
           at&nbsp;
-          <a href="https://twitter.com/RomanSemko" target="_blank" style={{ position: 'relative', top: '1.6px', left: '2px'}}>
+          <a href="https://twitter.com/RomanSemko" target="_blank">
             SemkoDev
           </a>
         </Responsive>
@@ -404,13 +405,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(deepHoc(Home));
-
-function old() {
-  return (
-    <div>
-      Home!
-      <Link to="/page/abcd">Page</Link>
-      <Route path="/page/:page" component={Page} />
-    </div>
-  );
-}

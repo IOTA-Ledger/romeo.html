@@ -26,16 +26,6 @@ import TransferRow from '../components/transfer-row';
 
 import classes from './transfer.css';
 
-const UNITS = [
-  { key: 'i', text: 'i', value: 1 },
-  { key: 'k', text: 'Ki', value: 1000 },
-  { key: 'm', text: 'Mi', value: 1000000 },
-  { key: 'g', text: 'Gi', value: 1000000000 },
-  { key: 't', text: 'Ti', value: 1000000000000 }
-];
-
-const MAX_TXS = 5;
-
 class Transfer extends React.Component {
   constructor(props) {
     super(props);
@@ -240,7 +230,7 @@ class Transfer extends React.Component {
                 })
               }
             >
-              <Icon name="info" /> &nbsp; Next: Confirm transfer
+              <Icon name="info" /> Confirm transfer
             </Button>
           </Grid.Column>
         </Grid.Row>
@@ -479,9 +469,11 @@ class Transfer extends React.Component {
   renderCancelButton () {
     const { history } = this.props;
     return (
-      <Button size="large" color="red" onClick={() => history.push(`/page/${this.pageObject.opts.index + 1}`)}>
-        Cancel
-      </Button>
+      <Responsive as="span" minWidth={480}>
+        <Button size="large" color="red" onClick={() => history.push(`/page/${this.pageObject.opts.index + 1}`)}>
+          Cancel
+        </Button>
+      </Responsive>
     )
   }
 
@@ -516,7 +508,7 @@ class Transfer extends React.Component {
                 })
               }
             >
-              <Icon name="payment" /> &nbsp; Next: Select source addresses
+              <Icon name="payment" /> &nbsp; Select inputs
             </Button>
           </Grid.Column>
           <Grid.Column width={4}>
