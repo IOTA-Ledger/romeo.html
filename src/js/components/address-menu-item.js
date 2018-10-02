@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import QRCode from 'qrcode.react';
-import { Menu, Icon, Header, Label, Popup } from 'semantic-ui-react';
-import { get } from '../romeo';
+import { Menu, Icon, Header, Label, Popup, Button } from 'semantic-ui-react';
+import { get, showInfo } from '../romeo';
 import { formatIOTAAmount } from '../utils';
 import { copyData } from './current-page-menu-item';
 import deepHoc from './deep-hoc';
@@ -14,6 +14,7 @@ class AddressMenuItem extends React.Component {
   render() {
     const {
       address: { address, balance, rawBalance, spent, keyIndex, transactions },
+      pageObject,
       currentPage,
       selected,
       history,
@@ -90,10 +91,12 @@ class AddressMenuItem extends React.Component {
         <Label size="mini">{Object.keys(transactions).length} TXs</Label>
       </span>
     );
-    const qrcode =
-      (selected || (!anySelected && latestAddress)) &&
+    const showMoreInfo = (selected || (!anySelected && latestAddress)) &&
       (!spent || spa) &&
-      currentPage ? (
+      currentPage;
+    const isLedger = romeo.guard.opts.name === 'ledger';
+    const qrcode = showMoreInfo
+       ? (
         <Popup
           position="left center"
           trigger={
@@ -109,6 +112,32 @@ class AddressMenuItem extends React.Component {
       ) : (
         ''
       );
+
+    const viewButton = (fluid) => (
+      <Button basic color='teal' fluid={fluid} onClick={() => {
+        window.open(
+          `https://thetangle.org/address/${address}`,
+          '_blank'
+        )
+      }
+      }>
+        <Icon name="external" /> View
+      </Button>
+    );
+    const buttons = showMoreInfo
+       ? isLedger && pageObject
+        ? (
+          <div className='ui two buttons address-actions'>
+              <Button basic color='green' onClick={() => displayAddress(pageObject, keyIndex)}>
+                <Icon name="usb" /> Ledger
+              </Button>
+            {viewButton(false)}
+          </div>
+        )
+        : (
+          <div className='address-actions'>{viewButton(true)}</div>
+        )
+       : null;
 
     return (
       <Menu.Item onClick={selectAddress} active={selected}>
@@ -143,9 +172,21 @@ class AddressMenuItem extends React.Component {
           content={text}
         />
         {qrcode}
+        {buttons}
       </Menu.Item>
     );
   }
+}
+
+function displayAddress(pageObject, keyIndex) {
+  pageObject.displayAddress(keyIndex + 1);
+  showInfo(
+    <span>
+      <Icon name="eye" />
+      Please check the address displayed on your Ledger. It should match with the current one.
+      If it doesn't - do not use it!
+    </span>
+  );
 }
 
 export default withRouter(AddressMenuItem);

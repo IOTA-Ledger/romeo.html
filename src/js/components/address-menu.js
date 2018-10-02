@@ -8,6 +8,7 @@ class AddressMenu extends React.Component {
   constructor(props) {
     super(props);
     this.addNewAddress = this.addNewAddress.bind(this);
+    this.romeo = get();
   }
   render() {
     const { page, selectedAddress } = this.props;
@@ -20,6 +21,7 @@ class AddressMenu extends React.Component {
     if (page.page.isSyncing && !adding && addresses.length === 0) {
       return null;
     }
+    const pageObject = this.romeo.pages.getByIndex(page.page.index).page;
     const isCurrent = isCurrentIndex(page.keyIndex);
     const addButton = (
       <Menu.Item onClick={this.addNewAddress} disabled={!!adding && isCurrent}>
@@ -44,6 +46,7 @@ class AddressMenu extends React.Component {
             address={address}
             key={address.address}
             currentPage={page.page.isCurrent}
+            pageObject={pageObject}
             anySelected={!!selectedAddress}
             latestAddress={i === 0}
             selected={
@@ -60,7 +63,7 @@ class AddressMenu extends React.Component {
     const { page } = this.props;
     const isCurrent = isCurrentIndex(page.keyIndex);
     if (!isCurrent) return;
-    const pageObject = get().pages.getByIndex(page.page.index).page;
+    const pageObject = this.romeo.pages.getByIndex(page.page.index).page;
     pageObject.getNewAddress();
   }
 }
