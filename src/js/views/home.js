@@ -341,6 +341,13 @@ class Home extends React.Component {
         >
           Donate to IOTA Ledger Team
         </Responsive>
+        <Responsive
+          as={Menu.Item}
+          minWidth={740}
+          onClick={() => window.open('https://powsrv.io/', '_blank')}
+        >
+          💪🏼 PoW by powsrv.io
+        </Responsive>
         <Menu.Menu position="right">
           <Popup
             position="top center"

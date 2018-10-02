@@ -29,7 +29,7 @@
     "serve": "^6.5.3"
   },
   "dependencies": {
-    "@semkodev/romeo.lib": "0.3.1",
+    "@semkodev/romeo.lib": "0.3.2",
     "babel-polyfill": "^6.26.0",
     "better-queue": "^3.8.6",
     "copy-to-clipboard": "^3.0.8",
