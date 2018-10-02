@@ -114,7 +114,9 @@ class AddressMenuItem extends React.Component {
       );
 
     const viewButton = (fluid) => (
-      <Button basic color='teal' fluid={fluid} onClick={() => {
+      <Button basic color='teal' fluid={fluid} onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
         window.open(
           `https://thetangle.org/address/${address}`,
           '_blank'
@@ -128,7 +130,11 @@ class AddressMenuItem extends React.Component {
        ? isLedger && pageObject
         ? (
           <div className='ui two buttons address-actions'>
-              <Button basic color='green' onClick={() => displayAddress(pageObject, keyIndex)}>
+              <Button basic color='green' onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                displayAddress(pageObject, keyIndex)
+              }}>
                 <Icon name="usb" /> Ledger
               </Button>
             {viewButton(false)}
@@ -179,7 +185,7 @@ class AddressMenuItem extends React.Component {
 }
 
 function displayAddress(pageObject, keyIndex) {
-  pageObject.displayAddress(keyIndex + 1);
+  pageObject.displayAddress(keyIndex);
   showInfo(
     <span>
       <Icon name="eye" />
