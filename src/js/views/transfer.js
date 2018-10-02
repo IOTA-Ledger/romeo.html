@@ -42,6 +42,7 @@ class Transfer extends React.Component {
           address: (location && location.state && location.state.address) || '',
           tag: (location && location.state && location.state.tag) || '',
           value: (location && location.state && location.state.value) || 0,
+          unit: 1000000,
           valid: false,
           identifier: romeo.utils.createIdentifier()
         }
@@ -50,6 +51,7 @@ class Transfer extends React.Component {
         address: this.props.donationAddress,
         tag: '999DEVIOTAROMEODONATION999',
         value: 0,
+        unit: 1000000,
         valid: true,
         identifier: romeo.utils.createIdentifier()
       }
@@ -183,6 +185,7 @@ class Transfer extends React.Component {
               address={t.address}
               tag={t.tag}
               value={t.value}
+              unit={t.unit}
               onChange={value => this.handleChange0(i, value)}
               onRemove={
                 transfers.length > 1 ? () => this.removeTransfer(i) : false
@@ -200,7 +203,7 @@ class Transfer extends React.Component {
   renderStep1() {
     const { transfers, donation, forceInput, autoInput } = this.state;
     const totalValue =
-      donation.value + transfers.reduce((s, t) => s + t.value, 0);
+      donation.value * donation.unit + transfers.reduce((s, t) => s + t.value * t.unit, 0);
     const hasEnoughInputs = this.hasEnoughInputs();
     const hasSufficientInputs = this.hasSufficientFunds();
     const message =
@@ -242,7 +245,7 @@ class Transfer extends React.Component {
   renderStep2() {
     const { transfers, donation } = this.state;
     const totalValue =
-      donation.value + transfers.reduce((s, t) => s + t.value, 0);
+      donation.value * donation.unit + transfers.reduce((s, t) => s + t.value * t.unit, 0);
     const usingSpentInputs = this.getSpentInputs().length;
     const donationRow =
       donation.value > 0 ? (
@@ -265,8 +268,8 @@ class Transfer extends React.Component {
             </Responsive>
             <Header as="h2" textAlign="right" color="green">
               <Header.Content>
-                {formatIOTAAmount(donation.value).short}
-                <Header.Subheader>{donation.value}</Header.Subheader>
+                {formatIOTAAmount(donation.value * donation.unit).short}
+                <Header.Subheader>{donation.value * donation.unit}</Header.Subheader>
               </Header.Content>
             </Header>
           </Table.Cell>
@@ -331,8 +334,8 @@ class Transfer extends React.Component {
                       </Responsive>
                       <Header as="h2" textAlign="right" color="green">
                         <Header.Content>
-                          {formatIOTAAmount(t.value).short}
-                          <Header.Subheader>{t.value}</Header.Subheader>
+                          {formatIOTAAmount(t.value * t.unit).short}
+                          <Header.Subheader>{t.value * t.unit}</Header.Subheader>
                         </Header.Content>
                       </Header>
                     </Table.Cell>
@@ -390,6 +393,7 @@ class Transfer extends React.Component {
           address={donation.address}
           tag={donation.tag}
           value={donation.value}
+          unit={donation.unit}
           name="Show some ❤️"
           description="Add a small donation for the Field Nodes"
         />
@@ -438,7 +442,7 @@ class Transfer extends React.Component {
   hasEnoughInputs() {
     const { transfers, donation, inputs } = this.state;
     const totalValue =
-      donation.value + transfers.reduce((s, t) => s + t.value, 0);
+      donation.value * donation.unit + transfers.reduce((s, t) => s + t.value * t.unit, 0);
     const validInputs = inputs.filter(
       i => (!i.spent || i.selected) && this.inputNotTransfer(i)
     );
@@ -453,7 +457,7 @@ class Transfer extends React.Component {
   hasSufficientFunds() {
     const { transfers, donation, inputs, autoInput } = this.state;
     const totalValue =
-      donation.value + transfers.reduce((s, t) => s + t.value, 0);
+      donation.value * donation.unit + transfers.reduce((s, t) => s + t.value * t.unit, 0);
     const validInputs = inputs.filter(
       i => ((autoInput && !i.spent) || i.selected) && this.inputNotTransfer(i)
     );
@@ -476,7 +480,7 @@ class Transfer extends React.Component {
     const { page: { page: { balance: pageBalance } } } = this.props;
     const { transfers, donation } = this.state;
     const totalValue =
-      donation.value + transfers.reduce((s, t) => s + t.value, 0);
+      donation.value * donation.unit + transfers.reduce((s, t) => s + t.value * t.unit, 0);
     const formattedValue = formatIOTAAmount(totalValue).short;
     const enoughBalance = totalValue <= pageBalance;
     const color = totalValue >= 0 && enoughBalance ? 'green' : 'red';
@@ -570,7 +574,7 @@ class Transfer extends React.Component {
   renderInputTable1() {
     const { transfers, donation, inputs } = this.state;
     const totalValue =
-      donation.value + transfers.reduce((s, t) => s + t.value, 0);
+      donation.value * donation.unit + transfers.reduce((s, t) => s + t.value * t.unit, 0);
     const selectedValue = inputs
       .filter(i => i.selected)
       .reduce((t, i) => t + i.balance, 0);
@@ -752,11 +756,11 @@ class Transfer extends React.Component {
     const { donation, transfers, autoInput, forceInput, inputs } = this.state;
     transfers.forEach(t => (t.tag = t.tag ? t.tag : ''));
     const totalValue =
-      donation.value + transfers.reduce((s, t) => s + t.value, 0);
-    const txs = transfers.slice();
+      donation.value * donation.unit + transfers.reduce((s, t) => s + t.value * t.unit, 0);
+    const txs = transfers.slice().map(t => Object.assign({}, t, { value: t.value * t.unit }));
 
     if (donation.value && donation.valid) {
-      txs.push(donation);
+      txs.push(Object.assign({}, donation, { value: donation.value * donation.unit }));
     }
     let txInputs = inputs.filter(i => i.selected);
 

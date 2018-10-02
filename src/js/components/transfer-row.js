@@ -207,11 +207,12 @@ class TransferRow extends React.Component {
 
   onChange() {
     const { onChange, identifier } = this.props;
-    const { value: v, address, unit, tag } = this.state;
+    const { value, address, unit, tag } = this.state;
     onChange &&
       onChange({
         identifier,
-        value: v * unit,
+        value,
+        unit,
         address,
         tag,
         valid: this.validInputs()
