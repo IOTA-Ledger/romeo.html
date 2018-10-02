@@ -20,7 +20,6 @@ import { formatIOTAAmount } from '../utils';
 class TXTable extends React.Component {
   constructor(props) {
     super(props);
-    this.renderRow = this.renderRow.bind(this);
     this.renderCard = this.renderCard.bind(this);
     this.openDetails = this.openDetails.bind(this);
     this.state = {
