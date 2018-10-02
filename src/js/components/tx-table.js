@@ -22,6 +22,7 @@ class TXTable extends React.Component {
     super(props);
     this.renderRow = this.renderRow.bind(this);
     this.renderCard = this.renderCard.bind(this);
+    this.openDetails = this.openDetails.bind(this);
     this.state = {
       hideZero: true
     };
@@ -44,29 +45,6 @@ class TXTable extends React.Component {
     }
 
     return this.renderCards(this._sortTXs(txs));
-
-    return (
-      <Table striped stackable compact fixed>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell width={8}>Transaction</Table.HeaderCell>
-            <Responsive as={Table.HeaderCell} width={5} maxWidth={767}>
-              Tag
-            </Responsive>
-            <Table.HeaderCell width={4}>View</Table.HeaderCell>
-            <Table.HeaderCell textAlign="right" width={3}>
-              <Checkbox
-                toggle
-                checked={hideZero}
-                label="Value"
-                onChange={() => this.setState({ hideZero: !hideZero })}
-              />
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        {this.renderRows(this._sortTXs(txs))}
-      </Table>
-    );
   }
 
   renderEmpty () {
@@ -118,171 +96,46 @@ class TXTable extends React.Component {
       <Icon name="close" color="yellow" />
     );
     const color = tx.value > 0 ? 'green' : tx.value < 0 ? 'red' : 'grey';
+    const txHash = (
+      <span className="hand" onClick={() => copyData(tx.hash, 'Transaction hash copied!', 'barcode')}>
+        {tx.hash}
+      </span>
+    );
+    const label = (
+      <Label as="a" color={color} attached="top right" size="huge" className="tx-value"
+             onClick={() => copyData(tx.value, 'Transaction value copied!', 'balance')}>
+        {formatIOTAAmount(tx.value).short}
+      </Label>
+    );
 
     return (
-      <Card raised key={tx.hash}>
+      <Card raised key={tx.hash} fluid>
         <Card.Content>
-          <Label textAlign="right" color={color} corner="right">
-            <Icon name={tx.value > 0 ? 'plus circle' : tx.value < 0 ? 'minus circle' : 'info circle'} />
-          </Label>
-          <Card.Header>
+          <Popup position="left center" trigger={label} content="Copy TX value"/>
+          <Card.Header className="attached hand" onClick={() => this.openDetails(tx)}>
             <Popup position="right center" trigger={icon} content={confirmed? 'Confirmed' : 'Pending'} />
             {new Date(tx.timestamp * 1000).toLocaleString()}
           </Card.Header>
           <Card.Meta>{tx.tag}</Card.Meta>
           <Popup position="top center" trigger={
             <Card.Description className="dont-break-out-bare">
-              <span className="hand" onClick={() => copyData(tx.hash, 'Transaction hash copied!', 'barcode')}>
-                {tx.hash}
-              </span>
+              {txHash}
             </Card.Description>
           } content="Click to copy the transaction hash"/>
-        </Card.Content>
-        <Card.Content extra>
-          <div className='ui three buttons'>
-            <Button color={color} onClick={() => copyData(tx.value, 'Transaction value copied!', 'balance')}>
-              {formatIOTAAmount(tx.value).short}
-            </Button>
-            <Button
-              basic
-              color={color}
-              icon
-              size="tiny"
-              onClick={() =>
-                window.open(
-                  `https://thetangle.org/transaction/${tx.hash}`,
-                  '_blank'
-                )
-              }
-            >
-              <Icon name="external" /> TX
-            </Button>
-            <Button
-              basic
-              color="teal"
-              icon
-              size="tiny"
-              onClick={() =>
-                window.open(`https://thetangle.org/bundle/${tx.bundle}`, '_blank')
-              }
-            >
-              <Icon name="external" /> Bundle
-            </Button>
-          </div>
         </Card.Content>
       </Card>
     )
   }
 
-  renderRows(txs) {
-    return <Table.Body>{txs.map(this.renderRow)}</Table.Body>;
-  }
-
-  renderRow(tx) {
-    const confirmed = tx.persistence;
-    const icon = confirmed ? (
-      <Icon name="check" color="green" />
-    ) : (
-      <Icon name="close" color="yellow" />
-    );
-    const color = tx.value > 0 ? 'green' : tx.value < 0 ? 'red' : 'grey';
-
-    const buttons = mini => (
-      <Button.Group fluid>
-        <Button
-          icon
-          size="tiny"
-          onClick={() =>
-            window.open(
-              `https://thetangle.org/transaction/${tx.hash}`,
-              '_blank'
-            )
-          }
-        >
-          {mini ? (
-            <span>
-              <Icon name="external" /> &nbsp; TN
-            </span>
-          ) : (
-            <span>
-              <Icon name="external" /> &nbsp; Transaction
-            </span>
-          )}
-        </Button>
-        <Button
-          icon
-          size="tiny"
-          onClick={() =>
-            window.open(`https://thetangle.org/bundle/${tx.bundle}`, '_blank')
-          }
-        >
-          {mini ? (
-            <span>
-              <Icon name="external" /> &nbsp; BN
-            </span>
-          ) : (
-            <span>
-              <Icon name="external" /> &nbsp; Bundle
-            </span>
-          )}
-        </Button>
-      </Button.Group>
-    );
-
-    return (
-      <Table.Row
-        key={tx.hash}
-        negative={tx.value < 0}
-        positive={tx.value > 0}
-        warning={!confirmed}
-      >
-        <Table.Cell className="ellipsible" width={8}>
-          <Header as="h4" textAlign="left">
-            {icon}
-            <Header.Content>
-              {new Date(tx.timestamp * 1000).toLocaleString()}
-              <Responsive as={Label} minWidth={1201}>
-                <Icon name="tag" />
-                {tx.tag}
-              </Responsive>
-              <Responsive as={Label} minWidth={830} maxWidth={960}>
-                <Icon name="tag" />
-                {tx.tag}
-              </Responsive>
-            </Header.Content>
-          </Header>
-        </Table.Cell>
-        <Responsive as={Table.Cell} maxWidth={767} width={4}>
-          <Label>
-            <Icon name="tag" />
-            {tx.tag}
-          </Label>
-        </Responsive>
-        <Table.Cell width={5}>
-          <Responsive maxWidth={767}>{buttons(false)}</Responsive>
-          <Responsive minWidth={768} maxWidth={1200}>
-            {buttons(true)}
-          </Responsive>
-          <Responsive minWidth={1201}>{buttons(false)}</Responsive>
-        </Table.Cell>
-        <Table.Cell textAlign="right" width={3}>
-          <Responsive maxWidth={767}>
-            <Divider />
-          </Responsive>
-          <Header as="h2" textAlign="right" color={color}>
-            {formatIOTAAmount(tx.value).short}
-          </Header>
-        </Table.Cell>
-      </Table.Row>
-    );
+  openDetails(tx) {
+    window.open(
+      `https://thetangle.org/transaction/${tx.hash}`,
+      '_blank'
+    )
   }
 
   _sortTXs(txs) {
     return txs.sort((a, b) => b.timestamp - a.timestamp);
-  }
-
-  _shorten(txt, length = 54) {
-    return `${txt.slice(0, length)}...`;
   }
 }
 

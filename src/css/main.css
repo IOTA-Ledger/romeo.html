@@ -69,3 +69,8 @@ html,
 .hand {
   cursor: pointer;
 }
+
+.tx-value {
+  min-width: 100px;
+  text-align: right;
+}
