@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import {
+  Card,
   Grid,
   Message,
   Header,
@@ -174,7 +175,7 @@ class Transfer extends React.Component {
 
     return (
       <span>
-        <Grid>
+        <Card.Group>
           {transfers.map((t, i) => (
             <TransferRow
               key={t.identifier}
@@ -189,7 +190,7 @@ class Transfer extends React.Component {
             />
           ))}
           {addButton}
-        </Grid>
+        </Card.Group>
         {this.renderDonation()}
         {this.renderTotalStep0()}
       </span>
@@ -381,15 +382,7 @@ class Transfer extends React.Component {
     if (!donation.address || !donation.address.length || !canAddTransfer) return null;
 
     return (
-      <Grid>
-        <Grid.Row>
-          <Grid.Column>
-            <Header as="h4">
-              <Icon name="heart" color="red" />
-              Add a small donation to the Field Nodes
-            </Header>
-          </Grid.Column>
-        </Grid.Row>
+      <Card.Group>
         <TransferRow
           disableAddress
           onChange={value => this.handleChange0('donation', value)}
@@ -397,8 +390,10 @@ class Transfer extends React.Component {
           address={donation.address}
           tag={donation.tag}
           value={donation.value}
+          name="Show some ❤️"
+          description="Add a small donation for the Field Nodes"
         />
-      </Grid>
+      </Card.Group>
     );
   }
 

@@ -126,7 +126,7 @@ class AddressMenuItem extends React.Component {
         <Icon name="external" /> View
       </Button>
     );
-    const buttons = showMoreInfo
+    const buttons = true //showMoreInfo
        ? isLedger && pageObject
         ? (
           <div className='ui two buttons address-actions'>

@@ -319,7 +319,7 @@ class Home extends React.Component {
         </Responsive>
         <Responsive
           as={Menu.Item}
-          minWidth={660}
+          minWidth={770}
           onClick={() =>
             this.props.history.push({
               pathname: `${linkToCurrentPage()}/transfer`,
@@ -327,11 +327,11 @@ class Home extends React.Component {
             })
           }
         >
-          Donate to SemkoDev
+          💰 Donate to SemkoDev
         </Responsive>
         <Responsive
           as={Menu.Item}
-          minWidth={660}
+          minWidth={1020}
           onClick={() =>
             this.props.history.push({
               pathname: `${linkToCurrentPage()}/transfer`,
@@ -339,11 +339,11 @@ class Home extends React.Component {
             })
           }
         >
-          Donate to IOTA Ledger Team
+          💰 Donate to IOTA Ledger Team
         </Responsive>
         <Responsive
           as={Menu.Item}
-          minWidth={740}
+          minWidth={1160}
           onClick={() => window.open('https://powsrv.io/', '_blank')}
         >
           💪🏼 PoW by powsrv.io

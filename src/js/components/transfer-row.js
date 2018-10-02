@@ -7,6 +7,8 @@ import {
   Popup,
   Form,
   Button,
+  Label,
+  Card
 } from 'semantic-ui-react';
 import { get, wasSpent } from '../romeo';
 import { formatIOTAAmount } from '../utils';
@@ -43,7 +45,12 @@ class TransferRow extends React.Component {
   }
 
   render() {
-    const { disableAddress, onRemove } = this.props;
+    const {
+      disableAddress,
+      onRemove,
+      name="New Destination",
+      description
+    } = this.props;
     const {
       value,
       address,
@@ -76,7 +83,7 @@ class TransferRow extends React.Component {
         value={address}
         disabled={disableAddress}
         placeholder="XYZ"
-        width={9}
+        width={10}
         name="address"
         maxLength={90}
       />
@@ -104,62 +111,58 @@ class TransferRow extends React.Component {
       }
     }
 
+    const label = (
+      <Label as="a" color="green" attached="top right" size="huge" className="tx-value">
+        {validValue ? formattedValue : 'X'}
+      </Label>
+    );
+
     return (
-      <Grid.Row>
-        <Grid.Column width={12}>
-          <Form>
-            <Form.Group>
-              {addressElement}
-              <Form.Input
-                fluid
-                label="Tag"
-                onChange={this.handleChange}
-                error={!this.validTag()}
-                value={tag}
-                placeholder="XYZ"
-                width={3}
-                name="tag"
-                maxLength={27}
-              />
-              <Form.Input
-                fluid
-                label="Value"
-                onChange={this.handleChange}
-                error={!this.validValue()}
-                value={value}
-                width={2}
-                name="value"
-                type="number"
-                min="0"
-              />
-              <Form.Select
-                fluid
-                label="Unit"
-                onChange={this.handleChange}
-                options={UNITS}
-                name="unit"
-                value={unit}
-                width={2}
-              />
-            </Form.Group>
-          </Form>
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Header
-            as="h2"
-            textAlign="right"
-            color={validValue ? 'green' : 'red'}
-            className="valueDisplay"
-          >
-            <Header.Content>
-              {validValue ? formattedValue : 'X'}
-              <Header.Subheader>
-                {!validValue && 'Input a positive value!'}
-              </Header.Subheader>
-            </Header.Content>
-          </Header>
-        </Grid.Column>
-      </Grid.Row>
+      <Card raised fluid>
+        <Card.Content>
+          {label}
+          <Card.Header className="attached hand">{name}</Card.Header>
+          <Card.Meta>{validValue ? description ? description : <span>&nbsp;</span> : 'Input a positive value!'}</Card.Meta>
+          <Card.Description>
+            <Form>
+              <Form.Group>
+                {addressElement}
+                <Form.Input
+                  fluid
+                  label="Tag"
+                  onChange={this.handleChange}
+                  error={!this.validTag()}
+                  value={tag}
+                  placeholder="XYZ"
+                  width={2}
+                  name="tag"
+                  maxLength={27}
+                />
+                <Form.Input
+                  fluid
+                  label="Value"
+                  onChange={this.handleChange}
+                  error={!this.validValue()}
+                  value={value}
+                  width={2}
+                  name="value"
+                  type="number"
+                  min="0"
+                />
+                <Form.Select
+                  fluid
+                  label="Unit"
+                  onChange={this.handleChange}
+                  options={UNITS}
+                  name="unit"
+                  value={unit}
+                  width={2}
+                />
+              </Form.Group>
+            </Form>
+          </Card.Description>
+        </Card.Content>
+      </Card>
     );
   }
 
