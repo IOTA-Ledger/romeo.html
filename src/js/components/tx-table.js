@@ -37,7 +37,7 @@ class TXTable extends React.Component {
           .reduce((t, i) => t.concat(i), [])
     ).filter(t => !hideZero || t.value !== 0);
 
-    txs = txs.filter(t => t.persistence || !txs.filter(t2 => t2.persistence && t2.bundle === t.bundle).length);
+    txs = txs.filter(t => t.persistence || !txs.filter(t2 => t2.persistence && t2.bundle === t.bundle && t2.value === t.value).length);
 
     if (txs.length === 0) {
       return page.page.isSyncing ? this.renderLoading() : this.renderEmpty()
@@ -57,9 +57,9 @@ class TXTable extends React.Component {
         <br/><br/>
         <Header as='h2' icon color="grey" textAlign="center">
           <Icon name='user secret' />
-          Psst! No transactions here, yet...
+          Psst! No value transactions here...
           <Header.Subheader>
-            You might try to click on <a href={`${window.location.href}`} onClick={sync}>sync</a>, if you expect otherwise.
+            Try clicking on <a href={`${window.location.href}`} onClick={sync}>sync</a>, if you expect otherwise.
           </Header.Subheader>
         </Header>
       </span>
@@ -120,7 +120,7 @@ class TXTable extends React.Component {
             <Card.Description className="dont-break-out-bare">
               {txHash}
             </Card.Description>
-          } content="Click to copy the transaction hash"/>
+          } content="Copy the transaction hash"/>
         </Card.Content>
       </Card>
     )

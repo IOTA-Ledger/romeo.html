@@ -133,12 +133,12 @@ class CurrentPageMenuItem extends React.Component {
         minWidth={600}
         position="bottom center"
         trigger={addressItem}
-        content="Copy latest address to clipboard."
+        content="Copy latest page address"
       />
     ) : null;
 
     const popupContent = isSyncing ? (
-      'This page is currently syncing.'
+      'This page is currently syncing'
     ) : (
       <span>
         <strong>Sync this page</strong>. Note: the most recent page periodically
@@ -161,7 +161,7 @@ class CurrentPageMenuItem extends React.Component {
           minWidth={755}
           position="bottom center"
           trigger={balanceItem}
-          content="Current page balance. Click to copy."
+          content="Copy current page balance"
         />
         {seedMenuItem}
         {addressButton}

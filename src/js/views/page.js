@@ -153,6 +153,9 @@ class Page extends React.Component {
               your payers an address from the current page. Please{' '}
               <Link to={`/page/${index + 1}/transfer`}>transfer</Link> the
               balance to the current page as soon as possible.
+              <br/>
+              If the positive balance is due to a pending transfer to the new page, you can
+              safely ignore this warning. Just re-sync the page when the transaction is confirmed.
             </span>
           }
         />

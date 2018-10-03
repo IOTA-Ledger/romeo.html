@@ -107,7 +107,7 @@ class AddressMenuItem extends React.Component {
               />
             </div>
           }
-          content="Click to copy the address!"
+          content="Copy this address"
         />
       ) : (
         ''
@@ -130,6 +130,7 @@ class AddressMenuItem extends React.Component {
        ? isLedger && pageObject
         ? (
           <div className='ui two buttons address-actions'>
+            <Popup position="top left" trigger={
               <Button basic color='green' onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -137,6 +138,7 @@ class AddressMenuItem extends React.Component {
               }}>
                 <Icon name="usb" /> Ledger
               </Button>
+            } content="Display on Ledger to verify validity"/>
             {viewButton(false)}
           </div>
         )

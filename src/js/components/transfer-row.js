@@ -133,8 +133,8 @@ class TransferRow extends React.Component {
                   onChange={this.handleChange}
                   error={!this.validTag()}
                   value={tag}
-                  placeholder="XYZ"
-                  width={2}
+                  placeholder="ROMEO9999999999999999999999"
+                  width={3}
                   name="tag"
                   maxLength={27}
                 />

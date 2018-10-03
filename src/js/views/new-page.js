@@ -14,11 +14,15 @@ import deepHoc from '../components/deep-hoc';
 class NewPage extends React.Component {
   constructor(props) {
     super(props);
+    this.romeo = get();
     this.state = {
-      adding: false
+      adding: this.romeo.addingPage
     };
     this.addPage = this.addPage.bind(this);
-    this.romeo = get();
+  }
+
+  shouldComponentUpdate (newProps, newState) {
+    return newState.adding === true && this.state.adding !== newState.adding;
   }
 
   render() {
@@ -94,7 +98,32 @@ class NewPage extends React.Component {
     const { history } = this.props;
     const romeo = get();
 
-    this.setState({ adding: true });
+    this.setState({ adding: true }, () => {
+      romeo.newPage({ preventRetries: romeo.guard.opts.name === 'ledger' })
+        .then(() => {
+          history.push(linkToCurrentPage());
+          showInfo(
+            <span>
+            <Icon name="file" /> New page setup complete!
+          </span>,
+            6000,
+            'success'
+          );
+        })
+        .catch((err) => {
+          console.log("ERROR ADDING PAGE!", err);
+          showInfo(
+            <span>
+              <Icon name="clock" />
+              There was an error moving the funds from the old page to the new one.
+              The new page is probably created. You will have to move the funds
+              manually from the old page. 😞 Sorry for that!
+            </span>,
+              300000,
+              'error'
+            );
+        });
+    });
     showInfo(
       <span>
         <Icon name="clock" />
@@ -103,19 +132,9 @@ class NewPage extends React.Component {
         not close it. You will get another notification, once the setup is
         complete.
       </span>,
-      12000,
+      15000,
       'warning'
     );
-    romeo.newPage({ preventRetries: romeo.guard.opts.name === 'ledger' }).then(() => {
-      history.push(linkToCurrentPage());
-      showInfo(
-        <span>
-          <Icon name="file" /> New page setup complete!
-        </span>,
-        6000,
-        'success'
-      );
-    });
   }
 }
 

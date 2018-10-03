@@ -48,6 +48,14 @@ class Home extends React.Component {
     this._downloadTxtFile = this._downloadTxtFile.bind(this);
   }
 
+  shouldComponentUpdate (newProps) {
+    // Prevent re-draws on new page add
+    if (newProps.pages.length === this.props.pages.length + 1) {
+      return false
+    }
+    return true
+  }
+
   render() {
     const { showMenu } = this.state;
     const { pages } = this.props;
@@ -56,7 +64,7 @@ class Home extends React.Component {
     const currentPage = romeo.pages.getCurrent();
 
     if (
-      !currentPage ||
+      (!currentPage && !romeo.addingPage) ||
       (pages.length < 2 && !Object.keys(currentPage.addresses).length)
     ) {
       return <Loading />;

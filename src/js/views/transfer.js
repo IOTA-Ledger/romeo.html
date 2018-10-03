@@ -176,27 +176,33 @@ class Transfer extends React.Component {
     ) : null;
 
     return (
-      <span>
-        <Card.Group>
-          {transfers.map((t, i) => (
-            <TransferRow
-              key={t.identifier}
-              identifier={t.identifier}
-              address={t.address}
-              tag={t.tag}
-              value={t.value}
-              unit={t.unit}
-              onChange={value => this.handleChange0(i, value)}
-              onRemove={
-                transfers.length > 1 ? () => this.removeTransfer(i) : false
-              }
-            />
-          ))}
-          {addButton}
-        </Card.Group>
-        {this.renderDonation()}
+      <Grid>
+        <Grid.Row>
+          <Grid.Column computer={12} mobile={16}>
+            <Card.Group>
+              {transfers.map((t, i) => (
+                <TransferRow
+                  key={t.identifier}
+                  identifier={t.identifier}
+                  address={t.address}
+                  tag={t.tag}
+                  value={t.value}
+                  unit={t.unit}
+                  onChange={value => this.handleChange0(i, value)}
+                  onRemove={
+                    transfers.length > 1 ? () => this.removeTransfer(i) : false
+                  }
+                />
+              ))}
+              {addButton}
+            </Card.Group>
+
+            {this.renderDonation()}
+
+          </Grid.Column>
+        </Grid.Row>
         {this.renderTotalStep0()}
-      </span>
+      </Grid>
     );
   }
 
@@ -489,45 +495,42 @@ class Transfer extends React.Component {
     const canProceed = enoughBalance && this.canGoToStep1();
 
     return (
-      <Grid>
-        <Grid.Row>
-          <Grid.Column width={12} textAlign="right">
-            <Divider />
-            {this.renderCancelButton()}
-            <Button
-              disabled={!canProceed}
-              color="olive"
-              size="large"
-              onClick={() =>
-                this.setState({
-                  currentStep: nextStep,
-                  maxStep: nextStep,
-                  forceInput:
-                    !this.hasSufficientFunds() || !this.hasEnoughInputs()
-                })
-              }
-            >
-              <Icon name="payment" /> &nbsp; Select inputs
-            </Button>
-          </Grid.Column>
-          <Grid.Column width={4}>
-            <Divider />
-            <Header
-              as="h2"
-              textAlign="right"
-              color={color}
-              className="valueDisplay"
-            >
-              <Header.Content>
-                {formattedValue}
-                <Header.Subheader>
-                  {!enoughBalance && 'Not enough balance!'}
-                </Header.Subheader>
-              </Header.Content>
-            </Header>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <Grid.Row>
+        <Grid.Column computer={4} mobile={16}>
+          <Divider />
+          <Header
+            as="h2"
+            color={color}
+            className="valueDisplay"
+          >
+            <Header.Content>
+              TOTAL: {formattedValue}
+              <Header.Subheader>
+                {!enoughBalance && 'Not enough balance!'}
+              </Header.Subheader>
+            </Header.Content>
+          </Header>
+        </Grid.Column>
+        <Grid.Column computer={8} mobile={16} textAlign="right">
+          <Divider />
+          {this.renderCancelButton()}
+          <Button
+            disabled={!canProceed}
+            color="olive"
+            size="large"
+            onClick={() =>
+              this.setState({
+                currentStep: nextStep,
+                maxStep: nextStep,
+                forceInput:
+                  !this.hasSufficientFunds() || !this.hasEnoughInputs()
+              })
+            }
+          >
+            <Icon name="payment" /> &nbsp; Select inputs
+          </Button>
+        </Grid.Column>
+      </Grid.Row>
     );
   }
 
@@ -757,7 +760,10 @@ class Transfer extends React.Component {
     transfers.forEach(t => (t.tag = t.tag ? t.tag : ''));
     const totalValue =
       donation.value * donation.unit + transfers.reduce((s, t) => s + t.value * t.unit, 0);
-    const txs = transfers.slice().map(t => Object.assign({}, t, { value: t.value * t.unit }));
+    const txs = transfers.slice().map(t => Object.assign({}, t, {
+      value: t.value * t.unit,
+      tag: t.tag || 'ROMEO9999999999999999999999'
+    }));
 
     if (donation.value && donation.valid) {
       txs.push(Object.assign({}, donation, { value: donation.value * donation.unit }));
