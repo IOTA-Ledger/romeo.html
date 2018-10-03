@@ -30,6 +30,7 @@ class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
+      account: '0',
       loading: false,
       file: null,
       fileError: false,
@@ -169,6 +170,13 @@ class Login extends React.Component {
             Romeo.
           </p>
           <p>
+            The account is either a number ranging from 0 to 999999999, or an arbitrary
+            text that will be hashed to a numeric representation. Each account has
+            own ledger with own pages. You can leave it at default (0) value.
+            Do not forget your account number! In case of doubt, just leave the default
+            value.
+          </p>
+          <p>
             Please be aware that you either use Ledger nano or username/password
             login. You cannot use both to login into the same account as both
             are using different techniques to generate and secure your ledger.
@@ -181,21 +189,31 @@ class Login extends React.Component {
           mobile={16}
           stretched
         >
-          {this.renderUpload()}
-          <Segment basic>
-            <Button
-              fluid
-              color="purple"
-              size="huge"
-              onClick={this.handleLedgerLogin}
-              disabled={loading}
-              loading={loading}
-            >
-              Login with Ledger
-            </Button>
-          </Segment>
+          {this.renderLedgerForm()}
         </Grid.Column>
       </Grid.Row>
+    );
+  }
+
+  renderLedgerForm() {
+    const { account, loading } = this.state;
+
+    return (
+      <Form onSubmit={this.handleSubmit} loading={loading}>
+        <Form.Field>{this.renderUpload()}</Form.Field>
+        <Form.Field>
+          <label>Account</label>
+          <input name="account" onChange={this.handleChange} value={account} />
+        </Form.Field>
+        <Button
+          fluid
+          color="purple"
+          size="huge"
+          onClick={this.handleLedgerLogin}
+        >
+          Login with Ledger
+        </Button>
+      </Form>
     );
   }
 
@@ -313,23 +331,28 @@ class Login extends React.Component {
   }
 
   async handleLedgerLogin() {
-    const { file } = this.state;
-    this.setState({ loading: true });
+    const { file, account } = this.state;
+    //const a = romeo.utils.validate.isAccount(account).valid;
+    if (true /*a*/) {
+      this.setState({ loading: true });
 
-    try {
-      const guard = await romeo.guard.LedgerGuard.build({ debug: true });
-      await this.props.login(guard, file);
-    } catch (error) {
-      this.setState({ loading: false });
-      showInfo(
-        <span>
+      try {
+        const guard = await romeo.guard.LedgerGuard.build({
+          debug: true, account: romeo.utils.getAccountNumber(account)
+        });
+        await this.props.login(guard, file);
+      } catch (error) {
+        this.setState({ loading: false });
+        showInfo(
+          <span>
           <Icon name="close" />&nbsp;
-          {(error && error.message) || 'Failed initializing LedgerGuard!'}
+            {(error && error.message) || 'Failed initializing LedgerGuard!'}
         </span>,
-        5000,
-        'error'
-      );
-      console.error('LedgerGuard.build error', error);
+          5000,
+          'error'
+        );
+        console.error('LedgerGuard.build error', error);
+      }
     }
   }
 

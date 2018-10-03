@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.5.0] - 2018-10-03
+
+Added multi-account support on ledger.
+
 ## [0.4.5] - 2018-10-03
 
 First public release candidate.

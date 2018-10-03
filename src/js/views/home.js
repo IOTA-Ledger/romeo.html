@@ -65,7 +65,7 @@ class Home extends React.Component {
 
     if (
       (!currentPage && !romeo.addingPage) ||
-      (pages.length < 2 && !Object.keys(currentPage.addresses).length)
+      (pages.length < 2 && (!currentPage || !Object.keys(currentPage.addresses).length))
     ) {
       return <Loading />;
     }
