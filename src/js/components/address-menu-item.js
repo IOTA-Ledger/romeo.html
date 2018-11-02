@@ -138,7 +138,7 @@ class AddressMenuItem extends React.Component {
               }}>
                 <Icon name="usb" /> Ledger
               </Button>
-            } content="Display on Ledger to verify validity"/>
+            } content="Display on Ledger Nano S to verify validity"/>
             {viewButton(false)}
           </div>
         )
@@ -191,7 +191,7 @@ function displayAddress(pageObject, keyIndex) {
   showInfo(
     <span>
       <Icon name="eye" />
-      Please check the address displayed on your Ledger. It should match with the current one.
+      Please check the address displayed on your Ledger Nano S. It should match with the current one.
       If it doesn't - do not use it!
     </span>
   );

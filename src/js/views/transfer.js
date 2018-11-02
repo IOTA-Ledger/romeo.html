@@ -299,8 +299,8 @@ class Transfer extends React.Component {
               header="Ledger detected"
               content={
                 <span>
-              During the transfer, please take a look at your Ledger: You will
-              have to confirm the transaction before it can be completed!
+              During the transfer, please take a look at your Ledger Nano S: You
+              will have to confirm the transaction before it can be completed!
             </span>
               }
             />
