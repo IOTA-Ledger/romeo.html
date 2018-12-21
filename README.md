@@ -1,6 +1,6 @@
-# Deviota Romeo - Ultra-Light-Ledger
+# Romeo - Ultra-Light-Ledger
 
-Deviota Romeo is a lightweight ledger built on top of the IOTA Tangle.
+Romeo is a lightweight ledger built on top of the IOTA Tangle.
 It compiles to a single HTML file, including all images, fonts,
 stylesheets and scripts, which is used as an interface for the end user.
 
@@ -56,16 +56,6 @@ It's work in progress. Please bear with the simplicity.
 ## WARNING
 
 This software is experimental. Use at your own risk!
-
-## Contributing
-
-### Donations
-
-**Donations always welcome**:
-
-```
-IYUIUCFNGOEEQHT9CQU9VYJVOJMQI9VYTQGQLTBAKTFIPWWRBFEV9TJWUZU9EYEFPM9VB9QYXTSMCDKMDABASVXPPX
-```
 
 ## Authors
 
