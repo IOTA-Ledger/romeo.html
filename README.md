@@ -24,7 +24,7 @@ select "save as" in your browser and save the page anywhere on your computer.
 
 **NOTE**: Safari is currently NOT supported!
 
-## How to run locally with HTTPS (for Ledger)
+## How to run locally with HTTPS (for Ledger Nano S)
 
 You will nodeJS and yarn installed on your computer. Using the command line, execute the
 following command to start a local server:

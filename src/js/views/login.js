@@ -106,7 +106,7 @@ class Login extends React.Component {
                       active={mode === 'ledger'}
                       onClick={() => this.setState({ mode: 'ledger' })}
                     >
-                      <Icon name="usb" /> Ledger Nano
+                      <Icon name="usb" /> Ledger Nano S
                     </Button>
                   </Button.Group>
                 </Grid.Column>
@@ -166,20 +166,21 @@ class Login extends React.Component {
           stretched
         >
           <p>
-            Use your <strong>Ledger Nano</strong> hardware wallet to login into
-            Romeo.
+            Use your <strong>Ledger Nano S</strong> hardware wallet to login
+            into Romeo.
           </p>
           <p>
-            The account is either a number ranging from 0 to 999999999, or an arbitrary
-            text that will be hashed to a numeric representation. Each account has
-            own ledger with own pages. You can leave it at default (0) value.
-            Do not forget your account number! In case of doubt, just leave the default
-            value.
+            The account is either a number ranging from 0 to 999999999, or an
+            arbitrary text that will be hashed to a numeric representation. Each
+            account has own ledger with own pages. You can leave it at default
+            (0) value. Do not forget your account number! In case of doubt, just
+            leave the default value.
           </p>
           <p>
-            Please be aware that you either use Ledger nano or username/password
-            login. You cannot use both to login into the same account as both
-            are using different techniques to generate and secure your ledger.
+            Please be aware that you either use Ledger Nano S or
+            username/password login. You cannot use both to login into the same
+            account as both are using different techniques to generate and
+            secure your ledger.
           </p>
         </Grid.Column>
         <Grid.Column
