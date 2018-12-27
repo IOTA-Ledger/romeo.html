@@ -1,6 +1,6 @@
 {
   "name": "@semkodev/romeo.html",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Lightweight Ledger built on top of IOTA",
   "main": "index.js",
   "author": "Roman Semko",
@@ -29,7 +29,7 @@
     "serve": "^6.5.3"
   },
   "dependencies": {
-    "@semkodev/romeo.lib": "0.5.0",
+    "@semkodev/romeo.lib": "0.5.1",
     "babel-polyfill": "^6.26.0",
     "better-queue": "^3.8.6",
     "copy-to-clipboard": "^3.0.8",

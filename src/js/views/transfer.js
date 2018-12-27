@@ -197,8 +197,6 @@ class Transfer extends React.Component {
               {addButton}
             </Card.Group>
 
-            {this.renderDonation()}
-
           </Grid.Column>
         </Grid.Row>
         {this.renderTotalStep0()}
@@ -347,7 +345,6 @@ class Transfer extends React.Component {
                     </Table.Cell>
                   </Table.Row>
                 ))}
-                {donationRow}
                 <Table.Row>
                   <Table.Cell>
                     <Header as="h4">Total:</Header>

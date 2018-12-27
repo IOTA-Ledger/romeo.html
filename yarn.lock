@@ -15,9 +15,10 @@
   dependencies:
     events "^2.0.0"
 
-"@semkodev/romeo.lib@0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@semkodev/romeo.lib/-/romeo.lib-0.2.1.tgz#e73d71ef3fc743d411dc83ce8f5deb4fb18cd3c3"
+"@semkodev/romeo.lib@0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@semkodev/romeo.lib/-/romeo.lib-0.5.1.tgz#b1bd230ba78736e8e5e8461112486bf4ded4d85b"
+  integrity sha512-MC/VfS7bdYv9JWjsPOzO+AGXaZhUrF70j8VjSPa/W5peDk87hs+Rjl8LcUnthBnbx+f8VliA17u6qjKBi1XYTQ==
   dependencies:
     "@ledgerhq/hw-transport-u2f" "^4.21.0"
     async "^2.6.0"
@@ -25,6 +26,7 @@
     better-queue-memory "^1.0.2"
     hw-app-iota "^0.4.1"
     iota.lib.js "^0.4.7"
+    iota.lib.js.powsrvio "^0.0.1"
     is-online "^7.0.0"
     mocha "^5.0.4"
     npm-watch "^0.3.0"
@@ -33,6 +35,7 @@
     rimraf "^2.6.2"
     sha.js "^2.4.10"
     tmp "^0.0.33"
+    xxhashjs "^0.2.2"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
@@ -1787,6 +1790,11 @@ csso@~2.3.1:
     clap "^1.0.9"
     source-map "^0.5.3"
 
+cuint@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/cuint/-/cuint-0.2.2.tgz#408086d409550c2631155619e9fa7bcadc3b991b"
+  integrity sha1-QICG1AlVDCYxFVYZ6fp7ytw7mRs=
+
 dargs@5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/dargs/-/dargs-5.1.0.tgz#ec7ea50c78564cd36c9d5ec18f66329fade27829"
@@ -2949,6 +2957,14 @@ invariant@^2.0.0, invariant@^2.2.1, invariant@^2.2.2:
   dependencies:
     loose-envify "^1.0.0"
 
+iota.lib.js.powsrvio@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/iota.lib.js.powsrvio/-/iota.lib.js.powsrvio-0.0.1.tgz#2e40da8f65dfda70f83faf0e799e1ffa814b87b1"
+  integrity sha512-IiazG6jIkvwojL5flbjnKSPVioL4NMjxj9SXC8Vk270hnu2XoSIJTjPgdSOnTtBhmInVyQjW1l5yW/Zh6pzjxw==
+  dependencies:
+    iota.lib.js "^0.5.0"
+    node-fetch "^2.0.0"
+
 iota.lib.js@^0.4.7:
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/iota.lib.js/-/iota.lib.js-0.4.7.tgz#c2af1a7886b8b0e239a4b54b5caa9dd239c2d7eb"
@@ -3957,6 +3973,11 @@ node-fetch@^1.0.1:
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
+
+node-fetch@^2.0.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
+  integrity sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
 
 node-forge@^0.7.1:
   version "0.7.4"
@@ -6585,6 +6606,13 @@ xmlhttprequest@^1.8.0:
 xtend@^4.0.0, xtend@~4.0.0, xtend@~4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
+
+xxhashjs@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/xxhashjs/-/xxhashjs-0.2.2.tgz#8a6251567621a1c46a5ae204da0249c7f8caa9d8"
+  integrity sha512-AkTuIuVTET12tpsVIQo+ZU6f/qDmKuRUcjaqR+OIvm+aCBsZ95i7UVY5WJ9TMsSaZ0DA2WxoZ4acu0sPH+OKAw==
+  dependencies:
+    cuint "^0.2.2"
 
 yallist@^2.1.2:
   version "2.1.2"
