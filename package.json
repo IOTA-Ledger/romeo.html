@@ -12,7 +12,8 @@
     "pack": "npm run build && node ./pack.js",
     "build": "npm run clean && npm run dist",
     "run": "parcel --https src/index.html",
-    "postversion": "git push --follow-tags"
+    "postversion": "git push --follow-tags",
+    "deploy": "npm run build && gh-pages -d dist -o github"
   },
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -22,6 +23,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
     "babel-runtime": "^6.26.0",
+    "gh-pages": "^2.0.1",
     "inliner": "^1.13.1",
     "parcel-bundler": "^1.5.1",
     "prettier": "1.10.2",
